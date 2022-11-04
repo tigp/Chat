@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './Login.jsx';
 import PageNotFound from './PageNotFound.jsx';
 import AuthContext from '../context/index.jsx';
-import useAuth from '../hooks/index.jsx';
+// import useAuth from '../hooks/index.jsx';
 
 const AuthProvider = ({ children }) => {
   const [userData, setUserData] = useState({
