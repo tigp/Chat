@@ -1,21 +1,48 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { useFormik } from 'formik';
+import axios from 'axios';
 import * as yup from 'yup';
+import React, { useEffect, useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useFormik } from 'formik';
 
-const schema = yup.object().shape({
-  username: yup.string().required('Required!'),
-  password: yup.string().required('Required!'),
-});
+import routes from '../routes.js'; // routes.loginPath()
+import useAuth from '../hooks/index.jsx';
 
 const Login = () => {
+  const auth = useAuth();
+  const inputRef = useRef();
+  const navigate = useNavigate();
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
+
   const formik = useFormik({
     initialValues: {
       username: '',
       password: '',
     },
-    validationSchema: schema,
-    onSubmit: ({ username, password }) => console.log(`${username} ${password}`),
+    validationSchema: yup.object().shape({
+      username: yup.string().required('Please enter username'),
+      password: yup.string().required('Please enter password'),
+    }),
+    onSubmit: async (values) => {
+      try {
+        auth.setUserData({ authState: true });
+
+        const { data } = await axios.post(routes.loginPath(), values); // => { token, username }
+        if (data.token && data.username) {
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('username', data.username);
+          navigate('/');
+        }
+      } catch (err) {
+        auth.setUserData({ authState: false });
+        if (err.isAxiosError || err.responce.status === 401) {
+          inputRef.current.select();
+          return;
+        }
+        throw err;
+      }
+    },
   });
 
   return (
@@ -36,14 +63,20 @@ const Login = () => {
                 <div className="form-floating mb-3">
                   <input
                     onChange={formik.handleChange}
+                    ref={inputRef}
                     name="username"
                     autoComplete="username"
                     required=""
                     placeholder="Ваш ник"
                     id="username"
-                    className="form-control"
+                    className={
+                      auth.authState
+                        ? 'form-control is-invalid'
+                        : 'form-control'
+                    }
                     value={formik.values.username}
                   />
+                  <label className="form-label" htmlFor="username">Ваш ник</label>
                 </div>
                 <div className="form-floating mb-4">
                   <input
@@ -54,9 +87,15 @@ const Login = () => {
                     placeholder="Пароль"
                     type="password"
                     id="password"
-                    className="form-control"
+                    className={
+                      auth.authState
+                        ? 'form-control is-invalid'
+                        : 'form-control'
+                    }
                     value={formik.values.password}
                   />
+                  <label className="form-label" htmlFor="password">Пароль</label>
+                  {auth.authState && <div className="invalid-tooltip">Неверные имя пользователя или пароль</div>}
                 </div>
                 <button type="submit" className="w-100 mb-3 btn btn-outline-primary">Войти</button>
               </form>
