@@ -76,7 +76,6 @@ const Login = () => {
                     }
                     value={formik.values.username}
                   />
-                  <label className="form-label" htmlFor="username">Ваш ник</label>
                 </div>
                 <div className="form-floating mb-4">
                   <input
@@ -94,7 +93,6 @@ const Login = () => {
                     }
                     value={formik.values.password}
                   />
-                  <label className="form-label" htmlFor="password">Пароль</label>
                   {auth.authState && <div className="invalid-tooltip">Неверные имя пользователя или пароль</div>}
                 </div>
                 <button type="submit" className="w-100 mb-3 btn btn-outline-primary">Войти</button>
