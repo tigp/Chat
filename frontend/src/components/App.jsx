@@ -5,16 +5,18 @@ import {
   Route,
   Link,
 } from 'react-router-dom';
+
 import Login from './Login.jsx';
 import PageNotFound from './PageNotFound.jsx';
 import AuthContext from '../context/index.jsx';
 // import useAuth from '../hooks/index.jsx';
+import routes from '../routes.js';
+import NavBar from './NavBar.jsx';
 
 const AuthProvider = ({ children }) => {
   const [userData, setUserData] = useState({
     token: localStorage.getItem('token'),
     username: localStorage.getItem('username'),
-    authState: false,
   });
   const memoOnUser = useMemo(() => ({ userData, setUserData }), [userData]);
 
@@ -28,18 +30,21 @@ const AuthProvider = ({ children }) => {
 const Home = () => (
   <>
     <h1>Welcome to the chat!</h1>
-    <Link to="/login">Login</Link>
+    <Link to={routes.loginPagePath()}>Login</Link>
   </>
 );
 
 const App = () => (
   <AuthProvider>
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="*" element={<PageNotFound />} />
-      </Routes>
+      <div className="d-flex flex-column h-100">
+        <NavBar />
+        <Routes>
+          <Route path={routes.rootPagePath()} element={<Home />} />
+          <Route path={routes.loginPagePath()} element={<Login />} />
+          <Route path="*" element={<PageNotFound />} />
+        </Routes>
+      </div>
     </BrowserRouter>
   </AuthProvider>
 );
