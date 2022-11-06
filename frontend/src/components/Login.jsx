@@ -1,16 +1,19 @@
 import axios from 'axios';
 import * as yup from 'yup';
-import React, { useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
+import { Form, Button } from 'react-bootstrap';
 
-import routes from '../routes.js'; // routes.loginPath()
-import useAuth from '../hooks/index.jsx';
+import routes from '../routes.js';
+// import useAuth from '../hooks/index.jsx';
 
 const Login = () => {
-  const auth = useAuth();
+  // const auth = useAuth();
+  const [authFailed, setAuthFailed] = useState(false);
   const inputRef = useRef();
   const navigate = useNavigate();
+  const location = useLocation();
   useEffect(() => {
     inputRef.current.focus();
   }, []);
@@ -26,16 +29,18 @@ const Login = () => {
     }),
     onSubmit: async (values) => {
       try {
-        auth.setUserData({ authState: true });
+        setAuthFailed(false);
 
         const { data } = await axios.post(routes.loginPath(), values); // => { token, username }
         if (data.token && data.username) {
           localStorage.setItem('token', data.token);
           localStorage.setItem('username', data.username);
-          navigate('/');
+          const { from } = location.state || { from: { pathname: routes.rootPagePath() } };
+          navigate(from);
         }
       } catch (err) {
-        auth.setUserData({ authState: false });
+        setAuthFailed(true);
+        console.log(err);
         if (err.isAxiosError || err.responce.status === 401) {
           inputRef.current.select();
           return;
@@ -58,51 +63,46 @@ const Login = () => {
                   alt="Войти"
                 />
               </div>
-              <form onSubmit={formik.handleSubmit} className="col-12 col-md-6 mt-3 mt-mb-0">
+              <Form onSubmit={formik.handleSubmit} className="col-12 col-md-6 mt-3 mt-mb-0">
                 <h1 className="text-center mb-4">Войти</h1>
-                <div className="form-floating mb-3">
-                  <input
+                <Form.Group className="form-floating mb-3">
+                  <Form.Control
                     onChange={formik.handleChange}
                     ref={inputRef}
+                    value={formik.values.username}
+                    isInvalid={authFailed}
                     name="username"
                     autoComplete="username"
                     required=""
                     placeholder="Ваш ник"
                     id="username"
-                    className={
-                      auth.authState
-                        ? 'form-control is-invalid'
-                        : 'form-control'
-                    }
-                    value={formik.values.username}
                   />
-                </div>
-                <div className="form-floating mb-4">
-                  <input
+                  <Form.Label htmlFor="username">Ваш ник</Form.Label>
+                </Form.Group>
+                <Form.Group className="form-floating mb-4">
+                  <Form.Control
                     onChange={formik.handleChange}
+                    value={formik.values.password}
+                    isInvalid={authFailed}
                     name="password"
                     autoComplete="current-password"
                     required=""
                     placeholder="Пароль"
                     type="password"
                     id="password"
-                    className={
-                      auth.authState
-                        ? 'form-control is-invalid'
-                        : 'form-control'
-                    }
-                    value={formik.values.password}
                   />
-                  {auth.authState && <div className="invalid-tooltip">Неверные имя пользователя или пароль</div>}
-                </div>
-                <button type="submit" className="w-100 mb-3 btn btn-outline-primary">Войти</button>
-              </form>
+                  <Form.Label htmlFor="password">Ваш пароль</Form.Label>
+                  {authFailed
+                  && <div className="invalid-tooltip">Неверные имя пользователя или пароль</div>}
+                </Form.Group>
+                <Button type="submit" variant="outline-primary" className="w-100 mb-3">Войти</Button>
+              </Form>
             </div>
             <div className="card-footer p-4">
               <div className="text-center">
                 <span>Нет акаунта?</span>
                 {' '}
-                <Link to="/signup">Регистрация</Link>
+                <Link to={routes.singUpPagePath()}>Регистрация</Link>
               </div>
             </div>
           </div>
