@@ -8,7 +8,7 @@ const NavBar = () => (
     <div className="container">
       <Link className="navbar-brand" to={routes.rootPagePath()}>Chat</Link>
       <DropdownButton variant="outline-info" title="Язык" id="bg-nested-dropdown">
-        <Dropdown.Item eventKey="1">ru</Dropdown.Item>
+        <Dropdown.Item eventKey="1">ру</Dropdown.Item>
         <Dropdown.Item eventKey="2">en</Dropdown.Item>
       </DropdownButton>
     </div>
