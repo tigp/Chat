@@ -3,15 +3,17 @@ import {
   BrowserRouter,
   Routes,
   Route,
-  Link,
+  Navigate,
 } from 'react-router-dom';
 
 import Login from './Login.jsx';
 import PageNotFound from './PageNotFound.jsx';
-import AuthContext from '../context/index.jsx';
-// import useAuth from '../hooks/index.jsx';
-import routes from '../routes.js';
 import NavBar from './NavBar.jsx';
+import Chat from './Chat';
+import AuthContext from '../context/index.jsx';
+
+import useAuth from '../hooks/index.jsx';
+import routes from '../routes.js';
 
 const AuthProvider = ({ children }) => {
   const [userData, setUserData] = useState({
@@ -27,12 +29,12 @@ const AuthProvider = ({ children }) => {
   );
 };
 
-const Home = () => (
-  <>
-    <h1>Welcome to the chat!</h1>
-    <Link to={routes.loginPagePath()}>Login</Link>
-  </>
-);
+const PrivateRoute = ({ children }) => {
+  const auth = useAuth();
+  const { token } = auth.userData;
+
+  return token ? children : <Navigate to={routes.loginPath()} />;
+};
 
 const App = () => (
   <AuthProvider>
@@ -40,7 +42,14 @@ const App = () => (
       <div className="d-flex flex-column h-100">
         <NavBar />
         <Routes>
-          <Route path={routes.rootPagePath()} element={<Home />} />
+          <Route
+            path={routes.rootPagePath()}
+            element={(
+              <PrivateRoute>
+                <Chat />
+              </PrivateRoute>
+            )}
+          />
           <Route path={routes.loginPagePath()} element={<Login />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
