@@ -18,16 +18,24 @@ const Chat = () => {
   const [content, setContent] = useState('');
 
   useEffect(() => {
-    const getChats = async () => {
-      const { data } = await axios.get(routes.getDataPath(), { headers: getAuthHeader() });
-      setContent(data);
+    const getData = async () => {
+      try {
+        const { data } = await axios.get(routes.getDataPath(), { headers: getAuthHeader() });
+        setContent(data);
+        // save channels and mess to the storage => setChannels
+      } catch (err) {
+        console.log(err);
+      }
     };
+    // {channels: [{ id: 1, name: "general", removable: false }], messages: [], currentChannelId: 1}
 
-    getChats();
+    getData();
   }, []);
+
   console.log(content);
+
   return (
-    <h1>WELCOME to the Chat!</h1>
+    <div className="row h-100 bg-white flex-md-row">HELLO CHAT</div>
   );
 };
 
