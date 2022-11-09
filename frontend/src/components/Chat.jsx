@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 import routes from '../routes';
 // import useAuth from '../hooks/index.jsx';
+import Channels from './Channels.jsx';
 
 const getAuthHeader = () => {
   const token = localStorage.getItem('token');
@@ -35,7 +36,11 @@ const Chat = () => {
   console.log(content);
 
   return (
-    <div className="row h-100 bg-white flex-md-row">HELLO CHAT</div>
+    <div className="container h-100 my-4 overflow-hidden rounded shadow">
+      <div className="row h-100 bg-white flex-md-row">
+        <Channels hi="HI" />
+      </div>
+    </div>
   );
 };
 
