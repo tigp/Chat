@@ -4,7 +4,7 @@ import messagesSlice from './messagesSlice';
 
 export default configureStore({
   reducer: {
-    channelsReducer,
-    messagesSlice,
+    channelsStore: channelsReducer,
+    messagesStore: messagesSlice,
   },
 });
