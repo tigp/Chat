@@ -7,7 +7,7 @@ import routes from '../routes';
 import Channels from './Channels.jsx';
 import MessagesBox from './MessagesBox.jsx';
 import { setChannels } from '../slices/channelsSlice.js';
-import { setMessages } from '../slices/messagesSlice.js';
+import { addMessages } from '../slices/messagesSlice.js';
 
 const getAuthHeader = () => {
   const token = localStorage.getItem('token');
@@ -28,13 +28,23 @@ const Chat = () => {
         const { data } = await axios.get(routes.getDataPath(), { headers: getAuthHeader() });
         batch(() => {
           dispatch(setChannels(data.channels));
-          dispatch(setMessages(data.messages));
+          dispatch(addMessages(data.messages));
         });
       } catch (err) {
         console.log(err);
       }
     };
-    // {channels: [{ id: 1, name: "general", removable: false }], messages: [], currentChannelId: 1}
+    // const data = {
+    //   channels: [
+    //     { id: generalChannelId, name: 'general', removable: false },
+    //     { id: randomChannelId, name: 'random', removable: false },
+    //   ],
+    //   messages: [],
+    //   currentChannelId: generalChannelId,
+    //   users: [
+    //     { id: 1, username: 'admin', password: 'admin' },
+    //   ],
+    // };
 
     getData();
   }, [dispatch]);

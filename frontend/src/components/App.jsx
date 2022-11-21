@@ -16,14 +16,27 @@ import useAuth from '../hooks/index.jsx';
 import routes from '../routes.js';
 
 const AuthProvider = ({ children }) => {
-  const [userData, setUserData] = useState({
-    token: localStorage.getItem('token'),
-    username: localStorage.getItem('username'),
-  });
-  const memoOnUser = useMemo(() => ({ userData, setUserData }), [userData]);
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  const logIn = ({ token, username }) => {
+    setLoggedIn(true);
+    localStorage.setItem('token', token);
+    localStorage.setItem('username', username);
+  };
+
+  const logOut = () => {
+    setLoggedIn(false);
+    localStorage.clear();
+  };
+
+  const memoOnAuth = useMemo(() => ({
+    loggedIn,
+    logIn,
+    logOut,
+  }), [loggedIn]);
 
   return (
-    <AuthContext.Provider value={memoOnUser}>
+    <AuthContext.Provider value={memoOnAuth}>
       {children}
     </AuthContext.Provider>
   );
@@ -31,9 +44,10 @@ const AuthProvider = ({ children }) => {
 
 const PrivateRoute = ({ children }) => {
   const auth = useAuth();
-  const { token } = auth.userData;
 
-  return token ? children : <Navigate to={routes.loginPath()} />;
+  return (
+    auth.loggedIn ? children : <Navigate to={routes.loginPath()} />
+  );
 };
 
 const App = () => (
