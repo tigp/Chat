@@ -5,11 +5,11 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { Form, Button } from 'react-bootstrap';
 
+import useAuth from '../hooks/index.jsx';
 import routes from '../routes.js';
-// import useAuth from '../hooks/index.jsx';
 
 const Login = () => {
-  // const auth = useAuth();
+  const auth = useAuth();
   const [authFailed, setAuthFailed] = useState(false);
   const inputRef = useRef();
   const navigate = useNavigate();
@@ -33,8 +33,7 @@ const Login = () => {
 
         const { data } = await axios.post(routes.loginPath(), values);
         if (data.token && data.username) {
-          localStorage.setItem('token', data.token);
-          localStorage.setItem('username', data.username);
+          auth.logIn(data); // added in localstorage token and username
           const { from } = location.state || { from: { pathname: routes.rootPagePath() } };
           navigate(from);
         }
