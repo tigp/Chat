@@ -5,7 +5,7 @@ const messagesSlice = createSlice({
   initialState: { messages: [] },
   reducers: {
     addMessages: (state, { payload }) => {
-      state.messages.push(...payload);
+      state.messages.push(...payload.messages);
     },
     addMessage: (state, { payload }) => {
       state.messages.push(payload);

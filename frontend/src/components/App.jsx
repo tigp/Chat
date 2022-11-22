@@ -9,31 +9,37 @@ import {
 import Login from './Login.jsx';
 import PageNotFound from './PageNotFound.jsx';
 import NavBar from './NavBar.jsx';
-import Chat from './Chat';
+import Chat from './Chat.jsx';
 import AuthContext from '../context/index.jsx';
 
 import useAuth from '../hooks/index.jsx';
 import routes from '../routes.js';
 
 const AuthProvider = ({ children }) => {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const currentUser = JSON.parse(localStorage.getItem('user'));
+  const [user, setUser] = useState(currentUser ? { username: currentUser.username } : null);
 
-  const logIn = ({ token, username }) => {
-    setLoggedIn(true);
-    localStorage.setItem('token', token);
-    localStorage.setItem('username', username);
+  const logIn = (userData) => {
+    localStorage.setItem('user', JSON.stringify(userData));
+    setUser({ username: userData.username });
   };
 
   const logOut = () => {
-    setLoggedIn(false);
-    localStorage.clear();
+    localStorage.removeItem('user');
+    setUser(null);
+  };
+
+  const getAuthHeader = () => {
+    const userData = JSON.parse(localStorage.getItem('user'));
+    return userData?.token ? { Authorization: `Bearer ${userData.token}` } : {};
   };
 
   const memoOnAuth = useMemo(() => ({
-    loggedIn,
     logIn,
     logOut,
-  }), [loggedIn]);
+    getAuthHeader,
+    user,
+  }), [user]);
 
   return (
     <AuthContext.Provider value={memoOnAuth}>
@@ -43,11 +49,8 @@ const AuthProvider = ({ children }) => {
 };
 
 const PrivateRoute = ({ children }) => {
-  const auth = useAuth();
-
-  return (
-    auth.loggedIn ? children : <Navigate to={routes.loginPath()} />
-  );
+  const { user } = useAuth();
+  return user ? children : <Navigate to={routes.loginPagePath()} />;
 };
 
 const App = () => (

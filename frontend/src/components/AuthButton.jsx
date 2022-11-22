@@ -9,12 +9,7 @@ import {
 import useAuth from '../hooks/index.jsx';
 
 const AuthButton = () => {
-  const auth = useAuth();
-
-  const handleButton = () => {
-    auth.logOut();
-    console.log('log Out!');
-  };
+  const { user, logOut } = useAuth();
 
   return (
     <ButtonGroup>
@@ -22,9 +17,7 @@ const AuthButton = () => {
         <Dropdown.Item eventKey="1">ру</Dropdown.Item>
         <Dropdown.Item eventKey="2">en</Dropdown.Item>
       </DropdownButton>
-      <Button variant="success" onClick={handleButton}>
-        {auth.loggedIn ? 'Войти' : 'Выйти'}
-      </Button>
+      {user && <Button variant="success" onClick={() => logOut()}>Выйти</Button>}
     </ButtonGroup>
   );
 };

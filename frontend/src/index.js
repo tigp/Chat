@@ -8,7 +8,9 @@ import store from './slices/index.js';
 
 const root = ReactDOM.createRoot(document.querySelector('#chat'));
 root.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
+  <React.StrictMode>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </React.StrictMode>,
 );

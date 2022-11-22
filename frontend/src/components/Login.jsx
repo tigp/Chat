@@ -9,7 +9,7 @@ import useAuth from '../hooks/index.jsx';
 import routes from '../routes.js';
 
 const Login = () => {
-  const auth = useAuth();
+  const { logIn } = useAuth();
   const [authFailed, setAuthFailed] = useState(false);
   const inputRef = useRef();
   const navigate = useNavigate();
@@ -30,13 +30,10 @@ const Login = () => {
     onSubmit: async (values) => {
       try {
         setAuthFailed(false);
-
         const { data } = await axios.post(routes.loginPath(), values);
-        if (data.token && data.username) {
-          auth.logIn(data); // added in localstorage token and username
-          const { from } = location.state || { from: { pathname: routes.rootPagePath() } };
-          navigate(from);
-        }
+        logIn(data); // added in localstorage username
+        const { from } = location.state || { from: { pathname: routes.rootPagePath() } };
+        navigate(from);
       } catch (err) {
         setAuthFailed(true);
         console.log(err);
