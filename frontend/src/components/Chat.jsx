@@ -4,8 +4,8 @@ import { useDispatch, batch } from 'react-redux';
 
 import routes from '../routes';
 import useAuth from '../hooks/index.jsx';
-import Channels from './Channels.jsx';
-import MessagesBox from './MessagesBox.jsx';
+import Channels from './channels/Channels.jsx';
+import Messages from './messages/Messages.jsx';
 import { setInitialState } from '../slices/channelsSlice.js';
 import { addMessages } from '../slices/messagesSlice.js';
 
@@ -25,11 +25,6 @@ const Chat = () => {
         console.log(err);
       }
     };
-    // const data = {
-    //   channels: [ { id: generalChannelId, name: 'general', removable: false }, ..,],
-    //   messages: [],
-    //   currentChannelId: generalChannelId,
-    // };
 
     getData();
   }, [dispatch, getAuthHeader]);
@@ -38,7 +33,7 @@ const Chat = () => {
     <div className="container h-100 my-4 overflow-hidden rounded shadow">
       <div className="row h-100 bg-white flex-md-row">
         <Channels />
-        <MessagesBox />
+        <Messages />
       </div>
     </div>
   );
