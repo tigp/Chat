@@ -1,13 +1,15 @@
 import React, { useEffect, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import { TfiArrowRight } from 'react-icons/tfi';
 
-import { addMessage } from '../../slices/messagesSlice.js';
 import MessagesBox from './MessagesBox.jsx';
+// import { addMessage } from '../../slices/messagesSlice.js';
+import { useApi } from '../../hooks/index.jsx';
 
 const Messages = () => {
-  const dispatch = useDispatch();
+  const { sendNewMessage } = useApi();
+  // const dispatch = useDispatch();
 
   const inputRef = useRef();
   useEffect(() => {
@@ -19,7 +21,8 @@ const Messages = () => {
       body: '',
     },
     onSubmit: ({ body }, { resetForm }) => {
-      dispatch(addMessage(body));
+      sendNewMessage(body);
+      // dispatch(addMessage(body));
       resetForm();
     },
   });

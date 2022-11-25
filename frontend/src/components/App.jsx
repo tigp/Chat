@@ -10,16 +10,17 @@ import Login from './Login.jsx';
 import PageNotFound from './PageNotFound.jsx';
 import NavBar from './NavBar.jsx';
 import Chat from './Chat.jsx';
-import AuthContext from '../context/index.jsx';
+import Registration from './Registration.jsx';
+import { AuthContext } from '../context/index.jsx';
 
-import useAuth from '../hooks/index.jsx';
+import { useAuth } from '../hooks/index.jsx';
 import routes from '../routes.js';
 
 const AuthProvider = ({ children }) => {
   const currentUser = JSON.parse(localStorage.getItem('user'));
   const [user, setUser] = useState(currentUser ? { username: currentUser.username } : null);
 
-  const logIn = (userData) => {
+  const logIn = (userData) => { // { token, username }
     localStorage.setItem('user', JSON.stringify(userData));
     setUser({ username: userData.username });
   };
@@ -68,6 +69,7 @@ const App = () => (
             )}
           />
           <Route path={routes.loginPagePath()} element={<Login />} />
+          <Route path={routes.singUpPagePath()} element={<Registration />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </div>

@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import _ from 'lodash';
 
-import useAuth from '../../hooks/index.jsx';
+import { useAuth } from '../../hooks/index.jsx';
 
 const MessagesBox = () => {
   const { messages } = useSelector((state) => state.messagesStore);

@@ -5,7 +5,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { Form, Button } from 'react-bootstrap';
 
-import useAuth from '../hooks/index.jsx';
+import { useAuth } from '../hooks/index.jsx';
 import routes from '../routes.js';
 
 const Login = () => {
@@ -49,7 +49,7 @@ const Login = () => {
   return (
     <div className="container-fluid h-100">
       <div className="row justify-content-center align-content-center h-100">
-        <div className="col-12 col-md-8 col-xxl-6">
+        <div className="col-12 col-md-8 col-xxl-6 add-margin-top">
           <div className="card shadow-sm">
             <div className="card-body row p-5">
               <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
