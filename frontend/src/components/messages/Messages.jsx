@@ -1,16 +1,16 @@
 import React, { useEffect, useRef } from 'react';
-// import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { TfiArrowRight } from 'react-icons/tfi';
 
 import MessagesBox from './MessagesBox.jsx';
-// import { addMessage } from '../../slices/messagesSlice.js';
-import { useApi } from '../../hooks/index.jsx';
+import { useAuth, useApi } from '../../hooks/index.jsx';
 
 const Messages = () => {
   const { sendNewMessage } = useApi();
-  // const dispatch = useDispatch();
-
+  const { user } = useAuth();
+  const { messages } = useSelector((state) => state.messagesStore);
+  const { currentChannelId } = useSelector((state) => state.channelsStore);
   const inputRef = useRef();
   useEffect(() => {
     inputRef.current.focus();
@@ -21,9 +21,19 @@ const Messages = () => {
       body: '',
     },
     onSubmit: ({ body }, { resetForm }) => {
-      sendNewMessage(body);
-      // dispatch(addMessage(body));
-      resetForm();
+      try {
+        const data = {
+          name: user.username,
+          text: body,
+          channelId: currentChannelId,
+        };
+        // console.log(messages); // array with messages
+        sendNewMessage(data);
+        resetForm();
+      } catch (err) {
+        console.log(err);
+        throw err;
+      }
     },
   });
 
@@ -32,7 +42,7 @@ const Messages = () => {
       <div className="d-flex flex-column h-100">
         <div className="bg-light mb-4 p-3 shadow-sm small">
           <p className="m-0"><b># general</b></p>
-          <span className="text-muted">0 сообщений</span>
+          <span className="text-muted">{messages.length}</span>
         </div>
         <MessagesBox />
         <div className="mt-auto px-5 py-3">

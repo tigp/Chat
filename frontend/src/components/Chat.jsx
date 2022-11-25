@@ -7,7 +7,7 @@ import { useAuth } from '../hooks/index.jsx';
 import Channels from './channels/Channels.jsx';
 import Messages from './messages/Messages.jsx';
 import { setChannels } from '../slices/channelsSlice.js';
-// import { setMessages } from '../slices/messagesSlice.js';
+import { setMessages } from '../slices/messagesSlice.js';
 
 const Chat = () => {
   const { getAuthHeader } = useAuth();
@@ -19,7 +19,7 @@ const Chat = () => {
         const { data } = await axios.get(routes.getDataPath(), { headers: getAuthHeader() });
         batch(() => {
           dispatch(setChannels(data));
-          // dispatch(setMessages(data));
+          dispatch(setMessages(data));
         });
       } catch (err) {
         console.log(err);

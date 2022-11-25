@@ -60,7 +60,6 @@ const Login = () => {
                 <Form.Group className="form-floating mb-3">
                   <Form.Control
                     onChange={formik.handleChange}
-                    ref={inputRef}
                     value={formik.values.username}
                     isInvalid={authFailed}
                     name="username"
@@ -68,6 +67,7 @@ const Login = () => {
                     required=""
                     placeholder="Ваш ник"
                     id="username"
+                    ref={inputRef}
                   />
                   <Form.Label htmlFor="username">Ваш ник</Form.Label>
                 </Form.Group>

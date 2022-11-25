@@ -9,16 +9,15 @@ import { ApiContext } from './context/index.jsx';
 import { addMessage } from './slices/messagesSlice.js';
 
 const buildApi = (socket) => {
-  // socket.on('connect', () => {});
   const sendNewMessage = (message) => {
-    socket.emit('newMassage', message, (responce) => {
+    socket.volatile.emit('newMessage', message, (responce) => {
       if (responce.status !== 'ok') {
         throw new Error('Network ERROR: cant send the message');
       }
     });
   };
 
-  socket.on('newMassage', (message) => {
+  socket.on('newMessage', (message) => {
     store.dispatch(addMessage(message));
   });
 

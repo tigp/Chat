@@ -6,6 +6,8 @@ import { GoPlus } from 'react-icons/go';
 const Channels = () => {
   const { channels, currentChannelId } = useSelector((state) => state.channelsStore);
 
+  const handleAddNewChannel = () => console.log('Add a new channel');
+
   return (
     <div className="col-4 col-md-2 border-end pt-5 px-0 bg-light">
       <div className="d-flex justify-content-between mb-2 ps-4 pe-2">
@@ -21,7 +23,7 @@ const Channels = () => {
           });
           return (
             <li key={id} className="nav-item w-100">
-              <button type="button" className={classNames}>
+              <button onClick={handleAddNewChannel} type="button" className={classNames}>
                 <span className="me-1">#</span>
                 {name}
               </button>
