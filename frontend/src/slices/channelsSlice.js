@@ -9,7 +9,10 @@ const channelsSlice = createSlice({
       state.channels = channels;
       state.currentChannelId = currentChannelId;
     },
-    addChannel: (state, { payload }) => { // should push { data?? }
+    setActiveChannel: (state, { payload }) => {
+      state.currentChannelId = payload;
+    },
+    addChannel: (state, { payload }) => { // { id, name, removable }
       state.channels.push(payload);
     },
     removeChannel: (state, { payload }) => { // should pass id
@@ -25,6 +28,7 @@ const channelsSlice = createSlice({
 
 export const {
   setChannels,
+  setActiveChannel,
   addChannel,
   removeChannel,
   renameChannel,
