@@ -1,12 +1,13 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import cn from 'classnames';
 import { GoPlus } from 'react-icons/go';
 
+import { setActiveChannel } from '../../slices/channelsSlice';
+
 const Channels = () => {
   const { channels, currentChannelId } = useSelector((state) => state.channelsStore);
-
-  const handleAddNewChannel = () => console.log('Add a new channel');
+  const dispatch = useDispatch();
 
   return (
     <div className="col-4 col-md-2 border-end pt-5 px-0 bg-light">
@@ -23,7 +24,11 @@ const Channels = () => {
           });
           return (
             <li key={id} className="nav-item w-100">
-              <button onClick={handleAddNewChannel} type="button" className={classNames}>
+              <button
+                onClick={() => dispatch(setActiveChannel(id))}
+                type="button"
+                className={classNames}
+              >
                 <span className="me-1">#</span>
                 {name}
               </button>
