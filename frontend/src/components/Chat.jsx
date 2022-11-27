@@ -2,10 +2,11 @@ import axios from 'axios';
 import React, { useEffect } from 'react';
 import { useDispatch, batch } from 'react-redux';
 
-import routes from '../routes';
-import { useAuth } from '../hooks/index.jsx';
 import Channels from './channels/Channels.jsx';
 import Messages from './messages/Messages.jsx';
+import Modal from './modals/Modal.jsx';
+import routes from '../routes';
+import { useAuth } from '../hooks/index.jsx';
 import { setChannels } from '../slices/channelsSlice.js';
 import { setMessages } from '../slices/messagesSlice.js';
 
@@ -30,12 +31,15 @@ const Chat = () => {
   }, [dispatch, getAuthHeader]);
 
   return (
-    <div className="container h-100 my-4 overflow-hidden rounded shadow">
-      <div className="row h-100 bg-white flex-md-row">
-        <Channels />
-        <Messages />
+    <>
+      <Modal />
+      <div className="container h-100 my-4 overflow-hidden rounded shadow">
+        <div className="row h-100 bg-white flex-md-row">
+          <Channels />
+          <Messages />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

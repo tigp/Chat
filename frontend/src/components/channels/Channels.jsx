@@ -4,6 +4,7 @@ import cn from 'classnames';
 import { GoPlus } from 'react-icons/go';
 
 import { setActiveChannel } from '../../slices/channelsSlice';
+import { openModal } from '../../slices/modalSlice.js';
 
 const Channels = () => {
   const { channels, currentChannelId } = useSelector((state) => state.channelsStore);
@@ -13,7 +14,11 @@ const Channels = () => {
     <div className="col-4 col-md-2 border-end pt-5 px-0 bg-light">
       <div className="d-flex justify-content-between mb-2 ps-4 pe-2">
         <span>Каналы</span>
-        <button type="button" className="p-0 text-primary btn btn-group-vertical">
+        <button
+          onClick={() => dispatch(openModal({ type: 'adding' }))}
+          type="button"
+          className="p-0 text-primary btn btn-group-vertical"
+        >
           <GoPlus />
         </button>
       </div>
