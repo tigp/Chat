@@ -1,10 +1,11 @@
 import React from 'react';
 import { Modal as BootstrapModal } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import Add from './Add.jsx';
 // import Remove from './Remove.jsx';
 // import Rename from './Rename.jsx';
+import { closeModal } from '../../slices/modalSlice.js';
 
 const mapping = {
   adding: Add,
@@ -13,6 +14,7 @@ const mapping = {
 };
 
 const Modal = () => {
+  const dispatch = useDispatch();
   const { isShow, modalType } = useSelector((state) => state.modalStore);
 
   if (!modalType) {
@@ -20,8 +22,9 @@ const Modal = () => {
   }
 
   const ModalComponent = mapping[modalType];
+
   return (
-    <BootstrapModal show={isShow} centered>
+    <BootstrapModal show={isShow} centered onHide={() => dispatch(closeModal())}>
       {ModalComponent && <ModalComponent />}
     </BootstrapModal>
   );

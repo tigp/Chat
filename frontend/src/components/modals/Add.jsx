@@ -9,13 +9,17 @@ import {
 import { useFormik } from 'formik';
 
 import { closeModal } from '../../slices/modalSlice.js';
+// import { addChannel } from '../../slices/channelsSlice';
+// import { useAuth, useApi } from '../../hooks/index.jsx';
+import { useApi } from '../../hooks/index.jsx';
 
 const Add = () => {
   const dispatch = useDispatch();
+  const { addNewChannel } = useApi();
 
-  const inputRef = useRef();
+  const inputRef = useRef(null);
   useEffect(() => {
-    // inputRef.current.focus();
+    inputRef.current.focus();
   }, []);
 
   const formik = useFormik({
@@ -24,10 +28,16 @@ const Add = () => {
     },
     // add validation later
     onSubmit: ({ nameOfTheChannel }) => { // have to use async
-      console.log(nameOfTheChannel);
+      try {
+        const data = { name: nameOfTheChannel };
+        addNewChannel(data);
+        dispatch(closeModal());
+      } catch (err) {
+        console.log(err);
+      }
     },
   });
-
+  // console.log(formik);
   return (
     <>
       <BootstrapModal.Header>
@@ -35,12 +45,14 @@ const Add = () => {
         <CloseButton onClick={() => dispatch(closeModal())} />
       </BootstrapModal.Header>
       <BootstrapModal.Body>
-        <Form onSubmit={formik.onSubmit}>
+        <Form onSubmit={formik.handleSubmit}>
           <Form.Group>
             <Form.Control
               onChange={formik.handleChange}
               value={formik.values.nameOfTheChannel}
               ref={inputRef}
+              onBlur={formik.handleBlur}
+              disabled={formik.isSubmitting}
               name="nameOfTheChannel"
               autoComplete="nameOfTheChannel"
               required=""
@@ -58,6 +70,7 @@ const Add = () => {
                 Отменить
               </Button>
               <Button
+                disabled={!formik.values.nameOfTheChannel && formik.isValid}
                 variant="primary"
                 type="submit"
               >

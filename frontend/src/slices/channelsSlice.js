@@ -14,10 +14,12 @@ const channelsSlice = createSlice({
     },
     addChannel: (state, { payload }) => { // { id, name, removable }
       state.channels.push(payload);
+      state.currentChannelId = payload.id;
     },
     removeChannel: (state, { payload }) => { // should pass id
       const filteredChannels = state.channels.filter((channel) => channel.id !== payload);
       state.channels = filteredChannels;
+      state.currentChannelId = 1;
     },
     renameChannel: (state, { payload }) => { // should pass object { id, name ???}
       const index = state.channels.findIndex((channel) => channel.id === payload.id);
