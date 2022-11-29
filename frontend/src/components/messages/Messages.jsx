@@ -10,7 +10,7 @@ const Messages = () => {
   const { sendNewMessage } = useApi();
   const { user } = useAuth();
   const { messages } = useSelector((state) => state.messagesStore);
-  const { currentChannelId } = useSelector((state) => state.channelsStore);
+  const { channels, currentChannelId } = useSelector((state) => state.channelsStore);
   const inputRef = useRef();
   useEffect(() => {
     inputRef.current.focus();
@@ -36,12 +36,22 @@ const Messages = () => {
     },
   });
 
+  const countMessagesOfChannel = messages.filter(({ channelId }) => channelId === currentChannelId);
+
   return (
     <div className="col p-0 h-100">
       <div className="d-flex flex-column chat-height">
         <div className="bg-light mb-4 p-3 shadow-sm small">
-          <p className="m-0"><b># general</b></p>
-          <span className="text-muted">{messages.length}</span>
+          {channels
+            .filter(({ id }) => id === currentChannelId)
+            .map(({ name, id }) => (
+              <p key={id} className="m-0">
+                <b>
+                  {`# ${name}`}
+                </b>
+              </p>
+            ))}
+          <span className="text-muted">{countMessagesOfChannel.length}</span>
         </div>
         <MessagesBox />
         <div className="mt-auto px-5 py-3">
