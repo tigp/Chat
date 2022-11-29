@@ -7,7 +7,7 @@ import App from './components/App.jsx';
 import store from './slices/index.js';
 import { ApiContext } from './context/index.jsx';
 import { addMessage } from './slices/messagesSlice.js';
-import { addChannel } from './slices/channelsSlice.js';
+import { addChannel, removeChannel } from './slices/channelsSlice.js';
 
 const buildApi = (socket) => {
   const sendNewMessage = (message) => {
@@ -34,9 +34,22 @@ const buildApi = (socket) => {
     store.dispatch(addChannel(channel));
   });
 
+  const deleteChannel = (channel) => {
+    socket.volatile.emit('removeChannel', channel, (responce) => {
+      if (responce.status !== 'ok') {
+        throw new Error('Network ERROR: can\'t remove the channel');
+      }
+    });
+  };
+
+  socket.on('removeChannel', (id) => {
+    store.dispatch(removeChannel(id));
+  });
+
   return {
     sendNewMessage,
     addNewChannel,
+    deleteChannel,
   };
 };
 

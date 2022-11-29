@@ -4,6 +4,7 @@ import cn from 'classnames';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { setActiveChannel } from '../../slices/channelsSlice';
+import { openModal } from '../../slices/modalSlice.js';
 
 const Channel = ({ channel }) => {
   const { id, name, removable } = channel;
@@ -33,9 +34,9 @@ const Channel = ({ channel }) => {
               <span className="visually-hidden">Управление каналом</span>
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              <Dropdown.Item onClick={() => console.log('rename channel')}>Переименовать</Dropdown.Item>
+              <Dropdown.Item onClick={() => dispatch(openModal({ type: 'renameChannel', id }))}>Переименовать</Dropdown.Item>
               <Dropdown.Divider />
-              <Dropdown.Item onClick={() => console.log('remove channel')}>Удалить</Dropdown.Item>
+              <Dropdown.Item onClick={() => dispatch(openModal({ type: 'deleteChannel', id }))}>Удалить</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         )

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Modal as BootstrapModal,
   Form,
@@ -9,37 +9,42 @@ import {
 import { useFormik } from 'formik';
 
 import { closeModal } from '../../slices/modalSlice.js';
-import { useApi } from '../../hooks/index.jsx';
+// import { useApi } from '../../hooks/index.jsx';
 
-const Add = () => {
+const Rename = () => {
   const dispatch = useDispatch();
-  const { addNewChannel } = useApi();
+  // const { renameChannel } = useApi();
+  const { channels } = useSelector((state) => state.channelsStore);
+  const { channelId } = useSelector((state) => state.modalStore);
+  const { name } = channels.find(({ id }) => id === channelId);
 
   const inputRef = useRef(null);
   useEffect(() => {
-    inputRef.current.focus();
+    inputRef.current.select();
   }, []);
 
   const formik = useFormik({
     initialValues: {
-      nameOfTheChannel: '',
+      nameOfTheChannel: name,
     },
     // add validation later
     onSubmit: async ({ nameOfTheChannel }) => { // have to use async
-      try {
-        const data = { name: nameOfTheChannel };
-        await addNewChannel(data);
-        dispatch(closeModal());
-      } catch (err) {
-        console.log(err);
-      }
+      // try {
+      //   const data = { name: nameOfTheChannel };
+      //   await addNewChannel(data);
+      //   dispatch(closeModal());
+      // } catch (err) {
+      //   console.log(err);
+      // }
+      console.log(nameOfTheChannel);
+      dispatch(closeModal());
     },
   });
 
   return (
     <>
       <BootstrapModal.Header>
-        <BootstrapModal.Title>Создать новый канал</BootstrapModal.Title>
+        <BootstrapModal.Title>Переименовать канал</BootstrapModal.Title>
         <CloseButton onClick={() => dispatch(closeModal())} />
       </BootstrapModal.Header>
       <BootstrapModal.Body>
@@ -57,7 +62,7 @@ const Add = () => {
               placeholder="Название канала"
               id="nameOfTheChannel"
             />
-            <Form.Label className="visually-hidden" htmlFor="nameOfTheChannel">Название канала</Form.Label>
+            <Form.Label className="visually-hidden" htmlFor="nameOfTheChannel">Имя канала</Form.Label>
             <div className="d-flex justify-content-end modal-buttons-padding">
               <Button
                 className="me-2"
@@ -82,4 +87,4 @@ const Add = () => {
   );
 };
 
-export default Add;
+export default Rename;

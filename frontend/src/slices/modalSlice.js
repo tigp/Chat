@@ -5,14 +5,14 @@ const modalSlice = createSlice({
   initialState: { isShow: false, modalType: null, channelId: null },
   reducers: {
     openModal: (state, { payload }) => {
-      const { type } = payload; // have to add id
+      const { type, id } = payload; // have to add id
       state.isShow = true;
       state.modalType = type;
-      // state.channelId = id ?? null;
+      state.channelId = id ?? null;
     },
     closeModal: (state) => {
       state.isShow = false;
-      state.type = null;
+      state.modalType = null;
       state.channelId = null;
     },
   },

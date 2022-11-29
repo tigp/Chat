@@ -14,7 +14,7 @@ const Channels = () => {
       <div className="d-flex justify-content-between mb-2 ps-4 pe-2">
         <span>Каналы</span>
         <button
-          onClick={() => dispatch(openModal({ type: 'adding' }))}
+          onClick={() => dispatch(openModal({ type: 'addChannel' }))}
           type="button"
           className="p-0 text-primary btn btn-group-vertical"
         >
