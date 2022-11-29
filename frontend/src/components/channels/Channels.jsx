@@ -1,13 +1,12 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import cn from 'classnames';
 import { GoPlus } from 'react-icons/go';
 
-import { setActiveChannel } from '../../slices/channelsSlice';
 import { openModal } from '../../slices/modalSlice.js';
+import Channel from './Channel.jsx';
 
 const Channels = () => {
-  const { channels, currentChannelId } = useSelector((state) => state.channelsStore);
+  const { channels } = useSelector((state) => state.channelsStore);
   const dispatch = useDispatch();
 
   return (
@@ -23,23 +22,8 @@ const Channels = () => {
         </button>
       </div>
       <ul className="nav flex-column nav-pills nav-fill px-2">
-        {channels.length > 0 && channels.map(({ id, name }) => {
-          const classNames = cn('w-100', 'rounded-0', 'text-start', 'btn', {
-            'btn-secondary': id === currentChannelId,
-          });
-          return (
-            <li key={id} className="nav-item w-100">
-              <button
-                onClick={() => dispatch(setActiveChannel(id))}
-                type="button"
-                className={classNames}
-              >
-                <span className="me-1">#</span>
-                {name}
-              </button>
-            </li>
-          );
-        })}
+        {channels.length > 0
+        && channels.map((channel) => <Channel key={channel.id} channel={channel} />)}
       </ul>
     </div>
   );
