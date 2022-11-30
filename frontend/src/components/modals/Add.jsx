@@ -52,6 +52,7 @@ const Add = ({ getValidationSchema }) => {
               ref={inputRef}
               onBlur={formik.handleBlur}
               disabled={formik.isSubmitting}
+              isInvalid={formik.errors.nameOfTheChannel}
               name="nameOfTheChannel"
               autoComplete="nameOfTheChannel"
               required=""
@@ -59,6 +60,7 @@ const Add = ({ getValidationSchema }) => {
               id="nameOfTheChannel"
             />
             <Form.Label className="visually-hidden" htmlFor="nameOfTheChannel">Название канала</Form.Label>
+            <Form.Control.Feedback type="invalid">{formik.errors.nameOfTheChannel}</Form.Control.Feedback>
             <div className="d-flex justify-content-end modal-buttons-padding">
               <Button
                 className="me-2"

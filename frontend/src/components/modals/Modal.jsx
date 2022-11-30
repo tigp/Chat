@@ -21,6 +21,7 @@ const Modal = () => {
   const getValidationSchema = (channels) => yup.object().shape({
     nameOfTheChannel: yup
       .string()
+      .trim()
       .min(3, 'must be at least 3 characters long')
       .max(10, 'the length should be no more than 10 characters')
       .notOneOf(channels, 'name of the channel have to unique'),
