@@ -9,11 +9,11 @@ import {
 import { useFormik } from 'formik';
 
 import { closeModal } from '../../slices/modalSlice.js';
-// import { useApi } from '../../hooks/index.jsx';
+import { useApi } from '../../hooks/index.jsx';
 
-const Rename = () => {
+const Rename = ({ getValidationSchema }) => {
   const dispatch = useDispatch();
-  // const { renameChannel } = useApi();
+  const { renameChannelName } = useApi();
   const { channels } = useSelector((state) => state.channelsStore);
   const { channelId } = useSelector((state) => state.modalStore);
   const { name } = channels.find(({ id }) => id === channelId);
@@ -27,17 +27,15 @@ const Rename = () => {
     initialValues: {
       nameOfTheChannel: name,
     },
-    // add validation later
-    onSubmit: async ({ nameOfTheChannel }) => { // have to use async
-      // try {
-      //   const data = { name: nameOfTheChannel };
-      //   await addNewChannel(data);
-      //   dispatch(closeModal());
-      // } catch (err) {
-      //   console.log(err);
-      // }
-      console.log(nameOfTheChannel);
-      dispatch(closeModal());
+    validationSchema: getValidationSchema(channels),
+    onSubmit: async ({ nameOfTheChannel }) => {
+      try {
+        const data = { name: nameOfTheChannel, id: channelId };
+        await renameChannelName(data);
+        dispatch(closeModal());
+      } catch (err) {
+        console.log(err);
+      }
     },
   });
 

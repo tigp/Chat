@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const channelsSlice = createSlice({
   name: 'channels',
-  initialState: { channels: [], currentChannelId: null },
+  initialState: { channels: [], currentChannelId: 1 },
   reducers: {
     setChannels: (state, { payload }) => {
       const { channels, currentChannelId } = payload;
@@ -21,9 +21,10 @@ const channelsSlice = createSlice({
       state.channels = filteredChannels;
       state.currentChannelId = 1;
     },
-    renameChannel: (state, { payload }) => { // should pass object { id, name ???}
-      const index = state.channels.findIndex((channel) => channel.id === payload.id);
-      state.channels[index].name = payload.name;
+    renameChannel: (state, { payload }) => { // responce => {name: 'adad', removable: true, id: 3}
+      const { name, id } = payload;
+      const targetChannel = state.channels.find((channel) => channel.id === id);
+      targetChannel.name = name;
     },
   },
 });

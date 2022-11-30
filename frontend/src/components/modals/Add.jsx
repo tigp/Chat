@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Modal as BootstrapModal,
   Form,
@@ -11,9 +11,10 @@ import { useFormik } from 'formik';
 import { closeModal } from '../../slices/modalSlice.js';
 import { useApi } from '../../hooks/index.jsx';
 
-const Add = () => {
+const Add = ({ getValidationSchema }) => {
   const dispatch = useDispatch();
   const { addNewChannel } = useApi();
+  const { channels } = useSelector((state) => state.channelsStore);
 
   const inputRef = useRef(null);
   useEffect(() => {
@@ -24,8 +25,8 @@ const Add = () => {
     initialValues: {
       nameOfTheChannel: '',
     },
-    // add validation later
-    onSubmit: async ({ nameOfTheChannel }) => { // have to use async
+    validationSchema: getValidationSchema(channels),
+    onSubmit: async ({ nameOfTheChannel }) => {
       try {
         const data = { name: nameOfTheChannel };
         await addNewChannel(data);

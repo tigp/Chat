@@ -15,7 +15,6 @@ const Delete = () => {
   const { deleteChannel } = useApi();
 
   const handleDeleteChannel = async () => {
-    // console.log(channelId);
     await deleteChannel({ id: channelId });
     dispatch(closeModal());
   };
