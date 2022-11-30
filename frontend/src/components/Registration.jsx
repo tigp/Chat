@@ -1,13 +1,22 @@
+import axios from 'axios';
+import * as yup from 'yup';
 import React, { useEffect, useRef, useState } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
+import { Form, Button } from 'react-bootstrap';
+
+import { useAuth } from '../hooks/index.jsx';
+import routes from '../routes.js';
 
 const Registration = () => {
-  const [authFailed, setAuthFailed] = useState(false);
+  const { logIn } = useAuth();
+  const [registrationFailed, setRegistrationFailed] = useState(false);
+  const [authExists, setAuthExists] = useState(false);
+  const navigate = useNavigate();
   const inputRef = useRef();
   useEffect(() => {
-    inputRef.current.focus();
-  }, []);
+    inputRef.current.select();
+  }, [authExists]);
 
   const formik = useFormik({
     initialValues: {
@@ -15,8 +24,43 @@ const Registration = () => {
       password: '',
       confirmPassword: '',
     },
-    onSubmit: ({ username: name, password, confirmPassword }) => {
-      console.log(`${name} ${password} ${confirmPassword}`);
+    validationSchema: yup.object().shape({
+      username: yup
+        .string()
+        .trim()
+        .required() // add here message
+        .min(3, 'must be at least 3 characters long') // add here message
+        .max(20, 'the length should be no more than 10 characters'), // add here message
+
+      password: yup
+        .string()
+        .trim()
+        .required() // add here message
+        .min(6), // add here message
+
+      confirmPassword: yup
+        .string()
+        .trim()
+        .required() // add here message
+        .oneOf([yup.ref('password'), null], 'Passwords must match'), // add here message
+    }),
+    onSubmit: async (values) => {
+      try {
+        setRegistrationFailed(false);
+        setAuthExists(false);
+        const newUser = { username: values.username, password: values.password };
+        const { data } = await axios.post(routes.createNewUserPath(), newUser);
+        logIn(data);
+        navigate(routes.rootPagePath());
+      } catch (err) {
+        if (err.response.status === 409) {
+          setAuthExists(true);
+          setRegistrationFailed(true);
+          values.username = '';
+        }
+        setRegistrationFailed(true);
+        console.log(err);
+      }
     },
   });
 
@@ -39,21 +83,26 @@ const Registration = () => {
                   <Form.Control
                     onChange={formik.handleChange}
                     value={formik.values.username}
-                    isInvalid={authFailed}
+                    ref={inputRef}
+                    onBlur={formik.handleBlur}
+                    disabled={formik.isSubmitting}
+                    isInvalid={formik.errors.username || registrationFailed}
                     name="username"
                     autoComplete="username"
                     required=""
                     placeholder="От 3 до 20 символов"
                     id="username"
-                    ref={inputRef}
                   />
                   <Form.Label htmlFor="username">Имя пользователя</Form.Label>
+                  <Form.Control.Feedback type="invalid">{formik.errors.username}</Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="form-floating mb-3">
                   <Form.Control
                     onChange={formik.handleChange}
                     value={formik.values.password}
-                    isInvalid={authFailed}
+                    onBlur={formik.handleBlur}
+                    disabled={formik.isSubmitting}
+                    isInvalid={formik.errors.password || registrationFailed}
                     name="password"
                     autoComplete="password"
                     required=""
@@ -62,12 +111,15 @@ const Registration = () => {
                     type="password"
                   />
                   <Form.Label htmlFor="password">Пароль</Form.Label>
+                  <Form.Control.Feedback type="invalid">{formik.errors.password}</Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="form-floating mb-3">
                   <Form.Control
                     onChange={formik.handleChange}
                     value={formik.values.confirmPassword}
-                    isInvalid={authFailed}
+                    onBlur={formik.handleBlur}
+                    disabled={formik.isSubmitting}
+                    isInvalid={formik.errors.confirmPassword || registrationFailed}
                     name="confirmPassword"
                     autoComplete="confirmPassword"
                     required=""
@@ -76,6 +128,9 @@ const Registration = () => {
                     type="password"
                   />
                   <Form.Label htmlFor="confirmPassword">Подтвердите пароль</Form.Label>
+                  <Form.Control.Feedback type="invalid">{formik.errors.confirmPassword}</Form.Control.Feedback>
+                  {authExists
+                  && <div className="invalid-tooltip">Пользователь существует</div>}
                 </Form.Group>
                 <Button type="submit" variant="outline-primary" className="w-100 btn">Войти</Button>
               </Form>
