@@ -2,12 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { io } from 'socket.io-client';
+import i18next from 'i18next';
+import { I18nextProvider, initReactI18next } from 'react-i18next';
 
 import App from './components/App.jsx';
 import store from './slices/index.js';
 import { ApiContext } from './context/index.jsx';
 import { addMessage } from './slices/messagesSlice.js';
 import { addChannel, removeChannel, renameChannel } from './slices/channelsSlice.js';
+import resources from './locales/index';
 
 const buildApi = (socket) => {
   const sendNewMessage = (message) => {
@@ -66,16 +69,27 @@ const buildApi = (socket) => {
   };
 };
 
-const runApp = () => {
+const runApp = async () => {
   const socket = io();
   const chatApi = buildApi(socket);
+
+  const i18n = i18next.createInstance();
+  await i18n
+    .use(initReactI18next)
+    .init({
+      fallbackLng: 'ru',
+      resources,
+      debug: false,
+    });
 
   const root = ReactDOM.createRoot(document.querySelector('#chat'));
   root.render(
     <React.StrictMode>
       <Provider store={store}>
         <ApiContext.Provider value={chatApi}>
-          <App />
+          <I18nextProvider i18n={i18n}>
+            <App />
+          </I18nextProvider>
         </ApiContext.Provider>
       </Provider>
     </React.StrictMode>,

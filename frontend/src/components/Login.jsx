@@ -2,6 +2,7 @@ import axios from 'axios';
 import * as yup from 'yup';
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import { Form, Button } from 'react-bootstrap';
 
@@ -10,6 +11,7 @@ import routes from '../routes.js';
 
 const Login = () => {
   const { logIn } = useAuth();
+  const { t } = useTranslation();
   const [authFailed, setAuthFailed] = useState(false);
   const inputRef = useRef();
   const navigate = useNavigate();
@@ -31,7 +33,7 @@ const Login = () => {
       try {
         setAuthFailed(false);
         const { data } = await axios.post(routes.loginPath(), values);
-        logIn(data); // added in localstorage username
+        logIn(data);
         const { from } = location.state || { from: { pathname: routes.rootPagePath() } };
         navigate(from);
       } catch (err) {
@@ -56,7 +58,7 @@ const Login = () => {
                 <img src="./images/enter.jpg" className="rounded-circle" alt="Войти" />
               </div>
               <Form onSubmit={formik.handleSubmit} className="col-12 col-md-6 mt-3 mt-mb-0">
-                <h1 className="text-center mb-4">Войти</h1>
+                <h1 className="text-center mb-4">{t('login.header')}</h1>
                 <Form.Group className="form-floating mb-3">
                   <Form.Control
                     onChange={formik.handleChange}
