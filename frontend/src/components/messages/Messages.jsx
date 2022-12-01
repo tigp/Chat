@@ -2,6 +2,8 @@ import React, { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
+import { animateScroll } from 'react-scroll';
+import { toast } from 'react-toastify';
 import { TfiArrowRight } from 'react-icons/tfi';
 
 import MessagesBox from './MessagesBox.jsx';
@@ -17,7 +19,13 @@ const Messages = () => {
   const inputRef = useRef();
   useEffect(() => {
     inputRef.current.focus();
-  }, [currentChannelId]);
+    animateScroll.scrollToBottom({
+      containerId: 'messages-box',
+      delay: 0,
+      duration: 0,
+      smooth: true,
+    });
+  }, [currentChannelId, messages.length]);
 
   const formik = useFormik({
     initialValues: {
@@ -33,6 +41,7 @@ const Messages = () => {
         sendNewMessage(data);
         resetForm();
       } catch (err) {
+        toast.warn(`${t('toast.errorLoadingData')}`);
         console.log(err);
         throw err;
       }
@@ -73,7 +82,7 @@ const Messages = () => {
               />
               <button type="submit" className="btn btn-group-vertical">
                 <TfiArrowRight />
-                <span className="visually-hidden">Отправить</span>
+                <span className="visually-hidden">{t('chatPage.sendButton')}</span>
               </button>
             </div>
           </form>

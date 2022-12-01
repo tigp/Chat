@@ -1,7 +1,7 @@
 export default {
   translation: {
     navBar: {
-      chatLinks: 'Chat',
+      chatLinks: 'Hexlet Chat',
       languageSelection: 'Language',
       ru: 'ру',
       en: 'en',
@@ -30,6 +30,7 @@ export default {
       rename: 'Переименовать',
       delete: 'Удалить',
       enterMessage: 'Enter the message...',
+      sendButton: 'Send',
       counter: {
         messageCount_one: '{{count}} message',
         messageCount_other: '{{count}} messages',
