@@ -1,22 +1,25 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+import { useFormik } from 'formik';
 import {
   Modal as BootstrapModal,
   Form,
   CloseButton,
   Button,
 } from 'react-bootstrap';
-import { useFormik } from 'formik';
 
 import { closeModal } from '../../slices/modalSlice.js';
 import { useApi } from '../../hooks/index.jsx';
 
-const Rename = ({ getValidationSchema }) => {
-  const dispatch = useDispatch();
+const Rename = ({ values }) => {
+  const { getValidationSchema, getchannelsNames } = values;
   const { renameChannelName } = useApi();
   const { channels } = useSelector((state) => state.channelsStore);
   const { channelId } = useSelector((state) => state.modalStore);
   const { name } = channels.find(({ id }) => id === channelId);
+  const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const inputRef = useRef(null);
   useEffect(() => {
@@ -27,7 +30,7 @@ const Rename = ({ getValidationSchema }) => {
     initialValues: {
       nameOfTheChannel: name,
     },
-    validationSchema: getValidationSchema(channels),
+    validationSchema: getValidationSchema(getchannelsNames),
     onSubmit: async ({ nameOfTheChannel }) => {
       try {
         const data = { name: nameOfTheChannel, id: channelId };
@@ -42,7 +45,7 @@ const Rename = ({ getValidationSchema }) => {
   return (
     <>
       <BootstrapModal.Header>
-        <BootstrapModal.Title>Переименовать канал</BootstrapModal.Title>
+        <BootstrapModal.Title>{t('modalAdd.title')}</BootstrapModal.Title>
         <CloseButton onClick={() => dispatch(closeModal())} />
       </BootstrapModal.Header>
       <BootstrapModal.Body>
@@ -58,10 +61,9 @@ const Rename = ({ getValidationSchema }) => {
               name="nameOfTheChannel"
               autoComplete="nameOfTheChannel"
               required=""
-              placeholder="Название канала"
               id="nameOfTheChannel"
             />
-            <Form.Label className="visually-hidden" htmlFor="nameOfTheChannel">Имя канала</Form.Label>
+            <Form.Label className="visually-hidden" htmlFor="nameOfTheChannel">{t('modalRename.nameOfChannel')}</Form.Label>
             <Form.Control.Feedback type="invalid">{formik.errors.nameOfTheChannel}</Form.Control.Feedback>
             <div className="d-flex justify-content-end modal-buttons-padding">
               <Button
@@ -70,14 +72,14 @@ const Rename = ({ getValidationSchema }) => {
                 type="button"
                 onClick={() => dispatch(closeModal())}
               >
-                Отменить
+                {t('modalAdd.cancelButton')}
               </Button>
               <Button
                 disabled={!formik.values.nameOfTheChannel && formik.isValid}
                 variant="primary"
                 type="submit"
               >
-                Отправить
+                {t('modalAdd.sendButton')}
               </Button>
             </div>
           </Form.Group>

@@ -17,14 +17,16 @@ const mapping = {
 const Modal = () => {
   const dispatch = useDispatch();
   const { isShow, modalType } = useSelector((state) => state.modalStore);
+  const { channels } = useSelector((state) => state.channelsStore);
 
-  const getValidationSchema = (channels) => yup.object().shape({
+  const getchannelsNames = channels.map(({ name }) => name);
+  const getValidationSchema = (channelsNames) => yup.object().shape({
     nameOfTheChannel: yup
       .string()
       .trim()
       .min(3, 'must be at least 3 characters long')
       .max(10, 'the length should be no more than 10 characters')
-      .notOneOf(channels, 'name of the channel have to unique'),
+      .notOneOf(channelsNames, 'name of the channel have to unique'),
   });
 
   if (!modalType) {
@@ -35,7 +37,7 @@ const Modal = () => {
 
   return (
     <BootstrapModal show={isShow} centered onHide={() => dispatch(closeModal())}>
-      {ModalComponent && <ModalComponent getValidationSchema={getValidationSchema} />}
+      {ModalComponent && <ModalComponent values={{ getValidationSchema, getchannelsNames }} />}
     </BootstrapModal>
   );
 };

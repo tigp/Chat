@@ -1,7 +1,8 @@
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { Dropdown, ButtonGroup } from 'react-bootstrap';
 import cn from 'classnames';
-import { useSelector, useDispatch } from 'react-redux';
 
 import { setActiveChannel } from '../../slices/channelsSlice';
 import { openModal } from '../../slices/modalSlice.js';
@@ -9,6 +10,7 @@ import { openModal } from '../../slices/modalSlice.js';
 const Channel = ({ channel }) => {
   const { id, name, removable } = channel;
   const { currentChannelId } = useSelector((state) => state.channelsStore);
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   return (
@@ -31,12 +33,12 @@ const Channel = ({ channel }) => {
               className="flex-grow-0"
               variant={id === currentChannelId ? 'secondary' : null}
             >
-              <span className="visually-hidden">Управление каналом</span>
+              <span className="visually-hidden">{t('chatPage.channelManagment')}</span>
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              <Dropdown.Item onClick={() => dispatch(openModal({ type: 'renameChannel', id }))}>Переименовать</Dropdown.Item>
+              <Dropdown.Item onClick={() => dispatch(openModal({ type: 'renameChannel', id }))}>{t('chatPage.rename')}</Dropdown.Item>
               <Dropdown.Divider />
-              <Dropdown.Item onClick={() => dispatch(openModal({ type: 'deleteChannel', id }))}>Удалить</Dropdown.Item>
+              <Dropdown.Item onClick={() => dispatch(openModal({ type: 'deleteChannel', id }))}>{t('chatPage.delete')}</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         )

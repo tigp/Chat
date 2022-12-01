@@ -1,6 +1,7 @@
 import axios from 'axios';
 import * as yup from 'yup';
 import React, { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { Form, Button } from 'react-bootstrap';
@@ -10,6 +11,7 @@ import routes from '../routes.js';
 
 const Registration = () => {
   const { logIn } = useAuth();
+  const { t } = useTranslation();
   const [registrationFailed, setRegistrationFailed] = useState(false);
   const [authExists, setAuthExists] = useState(false);
   const navigate = useNavigate();
@@ -78,7 +80,7 @@ const Registration = () => {
                 />
               </div>
               <Form onSubmit={formik.handleSubmit} className="w-50">
-                <h1 className="text-center mb-4">Регистрация</h1>
+                <h1 className="text-center mb-4">{t('registration.header')}</h1>
                 <Form.Group className="form-floating mb-3">
                   <Form.Control
                     onChange={formik.handleChange}
@@ -93,7 +95,7 @@ const Registration = () => {
                     placeholder="От 3 до 20 символов"
                     id="username"
                   />
-                  <Form.Label htmlFor="username">Имя пользователя</Form.Label>
+                  <Form.Label htmlFor="username">{t('registration.nameField')}</Form.Label>
                   <Form.Control.Feedback type="invalid">{formik.errors.username}</Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="form-floating mb-3">
@@ -110,7 +112,7 @@ const Registration = () => {
                     id="password"
                     type="password"
                   />
-                  <Form.Label htmlFor="password">Пароль</Form.Label>
+                  <Form.Label htmlFor="password">{t('registration.passwordField')}</Form.Label>
                   <Form.Control.Feedback type="invalid">{formik.errors.password}</Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="form-floating mb-3">
@@ -127,12 +129,12 @@ const Registration = () => {
                     id="confirmPassword"
                     type="password"
                   />
-                  <Form.Label htmlFor="confirmPassword">Подтвердите пароль</Form.Label>
+                  <Form.Label htmlFor="confirmPassword">{t('registration.confirmPasswordField')}</Form.Label>
                   <Form.Control.Feedback type="invalid">{formik.errors.confirmPassword}</Form.Control.Feedback>
                   {authExists
-                  && <div className="invalid-tooltip">Пользователь существует</div>}
+                  && <div className="invalid-tooltip">{t('registration.invalidData')}</div>}
                 </Form.Group>
-                <Button type="submit" variant="outline-primary" className="w-100 btn">Войти</Button>
+                <Button type="submit" variant="outline-primary" className="w-100 btn">{t('registration.registrationButton')}</Button>
               </Form>
             </div>
           </div>

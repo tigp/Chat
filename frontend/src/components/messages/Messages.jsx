@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import { TfiArrowRight } from 'react-icons/tfi';
 
@@ -7,14 +8,16 @@ import MessagesBox from './MessagesBox.jsx';
 import { useAuth, useApi } from '../../hooks/index.jsx';
 
 const Messages = () => {
+  const { t } = useTranslation();
   const { sendNewMessage } = useApi();
   const { user } = useAuth();
   const { messages } = useSelector((state) => state.messagesStore);
   const { channels, currentChannelId } = useSelector((state) => state.channelsStore);
+
   const inputRef = useRef();
   useEffect(() => {
     inputRef.current.focus();
-  }, []);
+  }, [currentChannelId]);
 
   const formik = useFormik({
     initialValues: {
@@ -51,7 +54,9 @@ const Messages = () => {
                 </b>
               </p>
             ))}
-          <span className="text-muted">{countMessagesOfChannel.length}</span>
+          <span className="text-muted">
+            {t('chatPage.counter.messageCount', { count: countMessagesOfChannel.length })}
+          </span>
         </div>
         <MessagesBox />
         <div className="mt-auto px-5 py-3">
@@ -63,7 +68,7 @@ const Messages = () => {
                 ref={inputRef}
                 name="body"
                 aria-label="Новое сообщение"
-                placeholder="Введите сообщение..."
+                placeholder={t('chatPage.enterMessage')}
                 className="border-0 p-0 ps-2 form-control"
               />
               <button type="submit" className="btn btn-group-vertical">

@@ -71,7 +71,7 @@ const Login = () => {
                     id="username"
                     ref={inputRef}
                   />
-                  <Form.Label htmlFor="username">Ваш ник</Form.Label>
+                  <Form.Label htmlFor="username">{t('login.nameField')}</Form.Label>
                 </Form.Group>
                 <Form.Group className="form-floating mb-4">
                   <Form.Control
@@ -85,18 +85,18 @@ const Login = () => {
                     type="password"
                     id="password"
                   />
-                  <Form.Label htmlFor="password">Ваш пароль</Form.Label>
+                  <Form.Label htmlFor="password">{t('login.passwordField')}</Form.Label>
                   {authFailed
-                  && <div className="invalid-tooltip">Неверные имя пользователя или пароль</div>}
+                  && <div className="invalid-tooltip">{t('login.invalidData')}</div>}
                 </Form.Group>
-                <Button type="submit" variant="outline-primary" className="w-100 mb-3">Войти</Button>
+                <Button type="submit" variant="outline-primary" className="w-100 mb-3">{t('login.loginButton')}</Button>
               </Form>
             </div>
             <div className="card-footer p-4">
               <div className="text-center">
-                <span>Нет акаунта?</span>
+                <span>{t('login.questionAboutAccount')}</span>
                 {' '}
-                <Link to={routes.singUpPagePath()}>Регистрация</Link>
+                <Link to={routes.singUpPagePath()}>{t('login.registration')}</Link>
               </div>
             </div>
           </div>

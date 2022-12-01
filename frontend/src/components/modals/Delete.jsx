@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import {
   Modal as BootstrapModal,
   CloseButton,
@@ -13,6 +14,7 @@ const Delete = () => {
   const dispatch = useDispatch();
   const { channelId } = useSelector((state) => state.modalStore);
   const { deleteChannel } = useApi();
+  const { t } = useTranslation();
 
   const handleDeleteChannel = async () => {
     await deleteChannel({ id: channelId });
@@ -22,11 +24,11 @@ const Delete = () => {
   return (
     <>
       <BootstrapModal.Header>
-        <BootstrapModal.Title>Удалить канал</BootstrapModal.Title>
+        <BootstrapModal.Title>{t('modalDelete.title')}</BootstrapModal.Title>
         <CloseButton onClick={() => dispatch(closeModal())} />
       </BootstrapModal.Header>
       <BootstrapModal.Body>
-        <p className="lead">Уверены?</p>
+        <p className="lead">{t('modalDelete.body')}</p>
         <div className="d-flex justify-content-end modal-buttons-padding">
           <Button
             className="me-2"
@@ -34,14 +36,14 @@ const Delete = () => {
             type="button"
             onClick={() => dispatch(closeModal())}
           >
-            Отменить
+            {t('modalDelete.cancelButton')}
           </Button>
           <Button
             variant="danger"
             type="button"
             onClick={handleDeleteChannel}
           >
-            Удалить
+            {t('modalDelete.deleteButton')}
           </Button>
         </div>
       </BootstrapModal.Body>
