@@ -38,6 +38,10 @@ export default {
         messageCount_many: '{{count}} сообщений',
       },
     },
+    pageNotFound: {
+      header: 'Страница не найдена',
+      link: 'Но вы можете перейти на главную страницу',
+    },
     modalAdd: {
       title: 'Создать новый канал',
       nameOfChannel: 'Имя канала',

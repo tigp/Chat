@@ -36,6 +36,10 @@ export default {
         messageCount_other: '{{count}} messages',
       },
     },
+    pageNotFound: {
+      header: 'Page not found',
+      link: 'But you can go to the main page',
+    },
     modalAdd: {
       title: 'Create a new channel',
       nameOfChannel: 'Channel name',
