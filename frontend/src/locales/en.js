@@ -25,10 +25,10 @@ export default {
       registrationButton: 'Log in',
     },
     chatPage: {
-      channels: 'Каналы',
-      channelManagment: 'Управление каналом',
-      rename: 'Переименовать',
-      delete: 'Удалить',
+      channels: 'Channels',
+      channelManagment: 'Channel managment',
+      rename: 'Rename',
+      delete: 'Delete',
       enterMessage: 'Enter the message...',
       sendButton: 'Send',
       counter: {
