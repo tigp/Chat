@@ -6,6 +6,7 @@ import {
   CloseButton,
   Button,
 } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 
 import { closeModal } from '../../slices/modalSlice.js';
 import { useApi } from '../../hooks/index.jsx';
@@ -18,6 +19,7 @@ const Delete = () => {
 
   const handleDeleteChannel = async () => {
     await deleteChannel({ id: channelId });
+    toast.success(`${t('toast.deleteNotification')}`);
     dispatch(closeModal());
   };
 

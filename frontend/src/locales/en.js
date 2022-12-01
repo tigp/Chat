@@ -35,9 +35,6 @@ export default {
         messageCount_other: '{{count}} messages',
       },
     },
-    errors: {
-
-    },
     modalAdd: {
       title: 'Create a new channel',
       nameOfChannel: 'Channel name',
@@ -55,6 +52,15 @@ export default {
       body: 'Are you sure?',
       cancelButton: 'Cancel',
       deleteButton: 'Delete',
+    },
+    errors: {
+
+    },
+    toast: {
+      createNotification: 'Channel created',
+      renameNotification: 'Channel renamed',
+      deleteNotification: 'Channel deleted',
+      errorLoadingData: 'Error loading data',
     },
   },
 };

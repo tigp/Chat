@@ -37,9 +37,6 @@ export default {
         messageCount_many: '{{count}} сообщений',
       },
     },
-    errors: {
-
-    },
     modalAdd: {
       title: 'Создать новый канал',
       nameOfChannel: 'Имя канала',
@@ -57,6 +54,15 @@ export default {
       body: 'Уверены?',
       cancelButton: 'Отменить',
       deleteButton: 'Удалить',
+    },
+    errors: {
+
+    },
+    toast: {
+      createNotification: 'Канал создан',
+      renameNotification: 'Канал переименован',
+      deleteNotification: 'Канал удалён',
+      errorLoadingData: 'Ошибка при загрузке данных',
     },
   },
 };

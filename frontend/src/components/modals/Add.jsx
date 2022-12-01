@@ -8,6 +8,7 @@ import {
   CloseButton,
   Button,
 } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 
 import { closeModal } from '../../slices/modalSlice.js';
 import { useApi } from '../../hooks/index.jsx';
@@ -33,7 +34,9 @@ const Add = ({ values }) => {
         const data = { name: nameOfTheChannel };
         await addNewChannel(data);
         dispatch(closeModal());
+        toast.success(`${t('toast.createNotification')}`);
       } catch (err) {
+        toast.warn(`${t('toast.errorLoadingData')}`);
         console.log(err);
       }
     },

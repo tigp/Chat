@@ -8,6 +8,7 @@ import {
   CloseButton,
   Button,
 } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 
 import { closeModal } from '../../slices/modalSlice.js';
 import { useApi } from '../../hooks/index.jsx';
@@ -35,8 +36,10 @@ const Rename = ({ values }) => {
       try {
         const data = { name: nameOfTheChannel, id: channelId };
         await renameChannelName(data);
+        toast.success(`${t('toast.renameNotification')}`);
         dispatch(closeModal());
       } catch (err) {
+        toast.warn(`${t('toast.errorLoadingData')}`);
         console.log(err);
       }
     },
