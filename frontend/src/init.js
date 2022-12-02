@@ -4,13 +4,14 @@ import { Provider } from 'react-redux';
 import { io } from 'socket.io-client';
 import i18next from 'i18next';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
+import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
 
 import App from './components/App.jsx';
 import store from './slices/index.js';
 import { ApiContext } from './context/index.jsx';
 import { addMessage } from './slices/messagesSlice.js';
 import { addChannel, removeChannel, renameChannel } from './slices/channelsSlice.js';
-import resources from './locales/index';
+import resources from './locales/index.js';
 
 const buildApi = (socket) => {
   const sendNewMessage = (message) => {
@@ -82,15 +83,28 @@ const runApp = async () => {
       debug: false,
     });
 
+  const rollbarConfig = {
+    accessToken: '725e8da91d1347e299bf52263c2acfd8',
+    captureUncaught: true,
+    captureUnhandledRejections: true,
+    payload: {
+      environment: 'production',
+    },
+  };
+
   const root = ReactDOM.createRoot(document.querySelector('#chat'));
   root.render(
     <React.StrictMode>
       <Provider store={store}>
-        <ApiContext.Provider value={chatApi}>
-          <I18nextProvider i18n={i18n}>
-            <App />
-          </I18nextProvider>
-        </ApiContext.Provider>
+        <RollbarProvider config={rollbarConfig}>
+          <ErrorBoundary>
+            <ApiContext.Provider value={chatApi}>
+              <I18nextProvider i18n={i18n}>
+                <App />
+              </I18nextProvider>
+            </ApiContext.Provider>
+          </ErrorBoundary>
+        </RollbarProvider>
       </Provider>
     </React.StrictMode>,
   );
