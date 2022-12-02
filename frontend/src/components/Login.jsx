@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
+import { toast } from 'react-toastify';
 import { Form, Button } from 'react-bootstrap';
 
 import { useAuth } from '../hooks/index.jsx';
@@ -43,6 +44,7 @@ const Login = () => {
           inputRef.current.select();
           return;
         }
+        toast.warn(`${t('toast.errorLoadingData')}`);
         throw err;
       }
     },
@@ -64,12 +66,12 @@ const Login = () => {
                     onChange={formik.handleChange}
                     value={formik.values.username}
                     isInvalid={authFailed}
+                    ref={inputRef}
                     name="username"
                     autoComplete="username"
                     required=""
                     placeholder="Ваш ник"
                     id="username"
-                    ref={inputRef}
                   />
                   <Form.Label htmlFor="username">{t('login.nameField')}</Form.Label>
                 </Form.Group>

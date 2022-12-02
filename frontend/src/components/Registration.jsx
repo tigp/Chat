@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
+import { toast } from 'react-toastify';
 import { Form, Button } from 'react-bootstrap';
 
 import { useAuth } from '../hooks/index.jsx';
@@ -30,21 +31,21 @@ const Registration = () => {
       username: yup
         .string()
         .trim()
-        .required() // add here message
-        .min(3, 'must be at least 3 characters long') // add here message
-        .max(20, 'the length should be no more than 10 characters'), // add here message
+        .required(t('errors.required'))
+        .min(3, t('errors.min3'))
+        .max(20, t('errors.max20')),
 
       password: yup
         .string()
         .trim()
-        .required() // add here message
-        .min(6), // add here message
+        .required(t('errors.required'))
+        .min(6, t('errors.min6')),
 
       confirmPassword: yup
         .string()
         .trim()
-        .required() // add here message
-        .oneOf([yup.ref('password'), null], 'Passwords must match'), // add here message
+        .required(t('errors.required'))
+        .oneOf([yup.ref('password'), null], t('errors.confPassword')),
     }),
     onSubmit: async (values) => {
       try {
@@ -58,7 +59,8 @@ const Registration = () => {
         if (err.response.status === 409) {
           setAuthExists(true);
           setRegistrationFailed(true);
-          values.username = '';
+        } else {
+          toast.warn(`${t('toast.errorLoadingData')}`);
         }
         setRegistrationFailed(true);
         console.log(err);

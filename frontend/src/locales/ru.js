@@ -10,7 +10,7 @@ export default {
     login: {
       header: 'Войти',
       nameField: 'Ваш ник',
-      passwordField: 'Ваш пароль',
+      passwordField: 'Пароль',
       invalidData: 'Неверные имя пользователя или пароль',
       loginButton: 'Войти',
       questionAboutAccount: 'Нет акаунта?',
@@ -61,7 +61,11 @@ export default {
       deleteButton: 'Удалить',
     },
     errors: {
-
+      required: 'Обязательное поле',
+      min3: 'От 3 до 20 символов',
+      min6: 'Не менее 6 символов',
+      max20: 'От 3 до 20 символов',
+      confPassword: 'Пароли должны совпадать',
     },
     toast: {
       createNotification: 'Канал создан',

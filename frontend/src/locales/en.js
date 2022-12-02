@@ -59,7 +59,11 @@ export default {
       deleteButton: 'Delete',
     },
     errors: {
-
+      required: 'Required field',
+      min3: 'From 3 to 20 characters',
+      min6: 'At least 6 characters',
+      max20: 'From 3 to 20 characters',
+      confPassword: 'Passwords must match',
     },
     toast: {
       createNotification: 'Channel created',

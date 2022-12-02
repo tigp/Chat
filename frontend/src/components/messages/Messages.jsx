@@ -5,12 +5,16 @@ import { useFormik } from 'formik';
 import { animateScroll } from 'react-scroll';
 import { toast } from 'react-toastify';
 import { TfiArrowRight } from 'react-icons/tfi';
+import leoProfanity from 'leo-profanity';
 
 import MessagesBox from './MessagesBox.jsx';
 import { useAuth, useApi } from '../../hooks/index.jsx';
 
 const Messages = () => {
   const { t } = useTranslation();
+
+  leoProfanity.loadDictionary('ru');
+
   const { sendNewMessage } = useApi();
   const { user } = useAuth();
   const { messages } = useSelector((state) => state.messagesStore);
@@ -31,14 +35,15 @@ const Messages = () => {
     initialValues: {
       body: '',
     },
-    onSubmit: ({ body }, { resetForm }) => {
+    onSubmit: async ({ body }, { resetForm }) => {
+      const data = {
+        name: user.username,
+        text: leoProfanity.clean(body),
+        channelId: currentChannelId,
+      };
+
       try {
-        const data = {
-          name: user.username,
-          text: body,
-          channelId: currentChannelId,
-        };
-        sendNewMessage(data);
+        await sendNewMessage(data);
         resetForm();
       } catch (err) {
         toast.warn(`${t('toast.errorLoadingData')}`);
