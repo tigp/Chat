@@ -28,7 +28,7 @@ const Modal = () => {
       .trim()
       .required(t('errors.required'))
       .min(3, t('errors.min3'))
-      .max(10, t('errors.max20'))
+      .max(20, t('errors.max20'))
       .notOneOf(channelsNames, t('errors.uniqueName')),
   });
 
