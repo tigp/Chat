@@ -64,7 +64,7 @@ const Add = ({ values }) => {
               id="nameOfTheChannel"
             />
             <Form.Label className="visually-hidden" htmlFor="nameOfTheChannel">{t('modalAdd.nameOfChannel')}</Form.Label>
-            <Form.Control.Feedback type="invalid">{formik.errors.nameOfTheChannel}</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">{t(formik.errors.nameOfTheChannel)}</Form.Control.Feedback>
             <div className="d-flex justify-content-end modal-buttons-padding">
               <Button
                 className="me-2"

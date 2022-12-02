@@ -66,6 +66,7 @@ export default {
       min6: 'Не менее 6 символов',
       max20: 'От 3 до 20 символов',
       confPassword: 'Пароли должны совпадать',
+      uniqueName: 'Должно быть уникальным',
     },
     toast: {
       createNotification: 'Канал создан',

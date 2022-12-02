@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal as BootstrapModal } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 
 import Add from './Add.jsx';
@@ -16,6 +17,7 @@ const mapping = {
 
 const Modal = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const { isShow, modalType } = useSelector((state) => state.modalStore);
   const { channels } = useSelector((state) => state.channelsStore);
 
@@ -24,9 +26,10 @@ const Modal = () => {
     nameOfTheChannel: yup
       .string()
       .trim()
-      .min(3, 'must be at least 3 characters long')
-      .max(10, 'the length should be no more than 10 characters')
-      .notOneOf(channelsNames, 'name of the channel have to unique'),
+      .required(t('errors.required'))
+      .min(3, t('errors.min3'))
+      .max(10, t('errors.max20'))
+      .notOneOf(channelsNames, t('errors.uniqueName')),
   });
 
   if (!modalType) {

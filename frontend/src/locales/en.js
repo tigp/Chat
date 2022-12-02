@@ -64,6 +64,7 @@ export default {
       min6: 'At least 6 characters',
       max20: 'From 3 to 20 characters',
       confPassword: 'Passwords must match',
+      uniqueName: 'name of the channel have to unique',
     },
     toast: {
       createNotification: 'Channel created',
