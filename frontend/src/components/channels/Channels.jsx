@@ -21,7 +21,7 @@ const Channels = () => {
           className="p-0 text-primary btn btn-group-vertical"
         >
           <GoPlus />
-        <span class="visually-hidden">+</span>
+          <span className="visually-hidden">+</span>
         </button>
       </div>
       <ul className="nav flex-column nav-pills nav-fill px-2">
