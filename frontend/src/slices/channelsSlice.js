@@ -21,7 +21,7 @@ const channelsSlice = createSlice({
       state.channels = filteredChannels;
       state.currentChannelId = 1;
     },
-    renameChannel: (state, { payload }) => { // responce => {name: 'adad', removable: true, id: 3}
+    renameChannel: (state, { payload }) => {
       const { name, id } = payload;
       const targetChannel = state.channels.find((channel) => channel.id === id);
       targetChannel.name = name;
