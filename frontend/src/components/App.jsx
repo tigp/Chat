@@ -22,7 +22,7 @@ const AuthProvider = ({ children }) => {
   const currentUser = JSON.parse(localStorage.getItem('user'));
   const [user, setUser] = useState(currentUser ? { username: currentUser.username } : null);
 
-  const logIn = (userData) => { // { token, username }
+  const logIn = (userData) => {
     localStorage.setItem('user', JSON.stringify(userData));
     setUser({ username: userData.username });
   };
