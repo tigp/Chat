@@ -39,6 +39,7 @@ const Add = ({ values }) => {
         toast.warn(`${t('toast.errorLoadingData')}`);
         console.log(err);
       }
+      dispatch(closeModal());
     },
   });
 
