@@ -10,7 +10,12 @@ import App from './components/App.jsx';
 import store from './slices/index.js';
 import { ApiContext } from './context/index.jsx';
 import { addMessage } from './slices/messagesSlice.js';
-import { addChannel, removeChannel, renameChannel } from './slices/channelsSlice.js';
+import {
+  addChannel,
+  removeChannel,
+  renameChannel,
+  setActiveChannel,
+} from './slices/channelsSlice.js';
 import resources from './locales/index.js';
 
 const buildApi = (socket) => {
@@ -27,8 +32,9 @@ const buildApi = (socket) => {
   });
 
   const addNewChannel = (channel) => {
-    socket.volatile.emit('newChannel', channel, (responce) => {
-      if (responce.status !== 'ok') {
+    socket.volatile.emit('newChannel', channel, ({ data, status }) => {
+      store.dispatch(setActiveChannel(data.id));
+      if (status !== 'ok') {
         throw new Error('Network ERROR: can\'t create the channel');
       }
     });
@@ -73,6 +79,10 @@ const buildApi = (socket) => {
 const runApp = async () => {
   const socket = io();
   const chatApi = buildApi(socket);
+
+  // const { ROLLBAR_ACCESS_TOKEN } = process.env;
+  // const token = process.env.ROLLBAR_ACCES_TOKEN;
+  // console.log(ROLLBAR_ACCESS_TOKEN);
 
   const i18n = i18next.createInstance();
   await i18n
