@@ -3,9 +3,9 @@ import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import { animateScroll } from 'react-scroll';
-import { toast } from 'react-toastify';
 import { TfiArrowRight } from 'react-icons/tfi';
 import leoProfanity from 'leo-profanity';
+import { toast } from 'react-toastify';
 
 import MessagesBox from './MessagesBox.jsx';
 import { useAuth, useApi } from '../../hooks/index.jsx';
@@ -46,7 +46,7 @@ const Messages = () => {
         await sendNewMessage(data);
         resetForm();
       } catch (err) {
-        toast.warn(`${t('toast.errorLoadingData')}`);
+        toast.error(`${t('toast.errorSendingMessage')}`);
         console.log(err);
         throw err;
       }
@@ -85,7 +85,7 @@ const Messages = () => {
                 placeholder={t('chatPage.enterMessage')}
                 className="border-0 p-0 ps-2 form-control"
               />
-              <button type="submit" className="btn btn-group-vertical">
+              <button type="submit" className="btn btn-group-vertical" disabled={!formik.dirty}>
                 <TfiArrowRight />
                 <span className="visually-hidden">{t('chatPage.sendButton')}</span>
               </button>
