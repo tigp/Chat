@@ -1,6 +1,8 @@
 import axios from 'axios';
 import React, { useEffect } from 'react';
 import { useDispatch, batch } from 'react-redux';
+import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 
 import Channels from './channels/Channels.jsx';
 import Messages from './messages/Messages.jsx';
@@ -11,8 +13,9 @@ import { setChannels } from '../slices/channelsSlice.js';
 import { setMessages } from '../slices/messagesSlice.js';
 
 const Chat = () => {
-  const { getAuthHeader } = useAuth();
+  const { getAuthHeader, logOut } = useAuth();
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const getData = async () => {
@@ -23,12 +26,13 @@ const Chat = () => {
           dispatch(setMessages(data));
         });
       } catch (err) {
-        console.log(err);
+        toast.warn(`${t('toast.errorLoadingData')}`);
+        logOut();
       }
     };
 
     getData();
-  }, [dispatch, getAuthHeader]);
+  }, [dispatch, getAuthHeader, t]);
 
   return (
     <>
