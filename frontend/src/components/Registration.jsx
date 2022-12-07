@@ -127,7 +127,7 @@ const Registration = () => {
                     name="confirmPassword"
                     autoComplete="confirmPassword"
                     required=""
-                    placeholder="Пароли должны совпадать"
+                    placeholder={t('errors.confPassword')}
                     id="confirmPassword"
                     type="password"
                   />
