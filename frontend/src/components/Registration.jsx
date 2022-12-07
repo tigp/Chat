@@ -137,7 +137,7 @@ const Registration = () => {
                   && <div className="invalid-tooltip">{t('registration.invalidData')}</div>}
                 </Form.Group>
                 <Button
-                  disabled={!(formik.isValid && formik.dirty)}
+                  disabled={!formik.dirty}
                   type="submit"
                   variant="outline-primary"
                   className="w-100 btn"
