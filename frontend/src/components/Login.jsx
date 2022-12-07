@@ -91,7 +91,14 @@ const Login = () => {
                   {authFailed
                   && <div className="invalid-tooltip">{t('login.invalidData')}</div>}
                 </Form.Group>
-                <Button type="submit" variant="outline-primary" className="w-100 mb-3">{t('login.loginButton')}</Button>
+                <Button
+                  disabled={!(formik.isValid && formik.dirty)}
+                  type="submit"
+                  variant="outline-primary"
+                  className="w-100 mb-3"
+                >
+                  {t('login.loginButton')}
+                </Button>
               </Form>
             </div>
             <div className="card-footer p-4">
