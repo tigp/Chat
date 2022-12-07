@@ -32,7 +32,7 @@ const Chat = () => {
     };
 
     getData();
-  }, [dispatch, getAuthHeader, t]);
+  }, [dispatch, getAuthHeader, t, logOut]);
 
   return (
     <>
