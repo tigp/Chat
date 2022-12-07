@@ -73,7 +73,7 @@ export default {
       renameNotification: 'Канал переименован',
       deleteNotification: 'Канал удалён',
       errorLoadingData: 'Ошибка при загрузке данных',
-      errorSendingMessage: 'Ошибка при отправке сообщения'
+      errorSendingMessage: 'Ошибка при отправке сообщения',
     },
   },
 };

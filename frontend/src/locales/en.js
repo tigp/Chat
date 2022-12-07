@@ -71,7 +71,7 @@ export default {
       renameNotification: 'Channel renamed',
       deleteNotification: 'Channel deleted',
       errorLoadingData: 'Error loading data',
-      errorSendingMessage: "Can't send the message"
+      errorSendingMessage: "Can't send the message",
     },
   },
 };
