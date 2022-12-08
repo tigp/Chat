@@ -80,10 +80,6 @@ const runApp = async () => {
   const socket = io();
   const chatApi = buildApi(socket);
 
-  // const { ROLLBAR_ACCESS_TOKEN } = process.env;
-  // const token = process.env.ROLLBAR_ACCES_TOKEN;
-  // console.log(ROLLBAR_ACCESS_TOKEN);
-
   const i18n = i18next.createInstance();
   await i18n
     .use(initReactI18next)
@@ -93,8 +89,9 @@ const runApp = async () => {
       debug: false,
     });
 
+  const { REACT_APP_ROLLBAR_ACCES_TOKEN } = process.env;
   const rollbarConfig = {
-    accessToken: '725e8da91d1347e299bf52263c2acfd8',
+    accessToken: REACT_APP_ROLLBAR_ACCES_TOKEN,
     captureUncaught: true,
     captureUnhandledRejections: true,
     payload: {
