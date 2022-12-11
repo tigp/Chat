@@ -40,7 +40,7 @@ const Login = () => {
       } catch (err) {
         setAuthFailed(true);
         console.log(err);
-        if (err.isAxiosError || err.responce.status === 401) {
+        if (err.isAxiosError || err.response.status === 401) {
           inputRef.current.select();
           return;
         }
