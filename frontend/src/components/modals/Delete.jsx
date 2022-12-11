@@ -9,6 +9,7 @@ import {
 import { toast } from 'react-toastify';
 
 import { closeModal } from '../../slices/modalSlice.js';
+import { setActiveChannel } from '../../slices/channelsSlice';
 import { useApi } from '../../hooks/index.jsx';
 
 const Delete = () => {
@@ -19,6 +20,7 @@ const Delete = () => {
 
   const handleDeleteChannel = async () => {
     await deleteChannel({ id: channelId });
+    dispatch(setActiveChannel());
     toast.success(`${t('toast.deleteNotification')}`);
     dispatch(closeModal());
   };
