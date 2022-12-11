@@ -45,7 +45,7 @@ const Chat = () => {
     };
 
     getData();
-  }, [dispatch, getAuthHeader, t, logOut]);
+  }, [dispatch, getAuthHeader, t, logOut, navigate, rollbar]);
 
   return (
     <>

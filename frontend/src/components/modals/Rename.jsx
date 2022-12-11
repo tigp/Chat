@@ -14,7 +14,7 @@ import { closeModal } from '../../slices/modalSlice.js';
 import { useApi } from '../../hooks/index.jsx';
 
 const Rename = ({ values }) => {
-  const { getValidationSchema, getchannelsNames } = values;
+  const { getValidationSchema, getChannelsNames } = values;
   const { renameChannelName } = useApi();
   const { channels } = useSelector((state) => state.channelsStore);
   const { channelId } = useSelector((state) => state.modalStore);
@@ -31,7 +31,7 @@ const Rename = ({ values }) => {
     initialValues: {
       nameOfTheChannel: name,
     },
-    validationSchema: getValidationSchema(getchannelsNames),
+    validationSchema: getValidationSchema(getChannelsNames),
     onSubmit: async ({ nameOfTheChannel }) => {
       try {
         const data = { name: nameOfTheChannel, id: channelId };
