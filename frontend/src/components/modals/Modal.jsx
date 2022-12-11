@@ -21,7 +21,7 @@ const Modal = () => {
   const { isShow, modalType } = useSelector((state) => state.modalStore);
   const { channels } = useSelector((state) => state.channelsStore);
 
-  const getchannelsNames = channels.map(({ name }) => name);
+  const getChannelsNames = channels.map(({ name }) => name);
   const getValidationSchema = (channelsNames) => yup.object().shape({
     nameOfTheChannel: yup
       .string()
@@ -40,7 +40,7 @@ const Modal = () => {
 
   return (
     <BootstrapModal show={isShow} centered onHide={() => dispatch(closeModal())}>
-      {ModalComponent && <ModalComponent values={{ getValidationSchema, getchannelsNames }} />}
+      {ModalComponent && <ModalComponent values={{ getValidationSchema, getChannelsNames }} />}
     </BootstrapModal>
   );
 };
