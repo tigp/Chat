@@ -12,9 +12,10 @@ import { toast } from 'react-toastify';
 
 import { closeModal } from '../../slices/modalSlice.js';
 import { useApi } from '../../hooks/index.jsx';
+import { setActiveChannel } from '../../slices/channelsSlice';
 
 const Add = ({ values }) => {
-  const { getValidationSchema, getchannelsNames } = values;
+  const { getValidationSchema, getChannelsNames } = values;
   const { addNewChannel } = useApi();
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -28,11 +29,12 @@ const Add = ({ values }) => {
     initialValues: {
       nameOfTheChannel: '',
     },
-    validationSchema: getValidationSchema(getchannelsNames),
+    validationSchema: getValidationSchema(getChannelsNames),
     onSubmit: async ({ nameOfTheChannel }) => {
       try {
         const data = { name: nameOfTheChannel };
-        await addNewChannel(data);
+        const callback = (id) => dispatch(setActiveChannel(id));
+        await addNewChannel(data, callback);
         dispatch(closeModal());
         toast.success(`${t('toast.createNotification')}`);
       } catch (err) {

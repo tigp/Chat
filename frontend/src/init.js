@@ -14,14 +14,13 @@ import {
   addChannel,
   removeChannel,
   renameChannel,
-  setActiveChannel,
 } from './slices/channelsSlice.js';
 import resources from './locales/index.js';
 
 const buildApi = (socket) => {
   const sendNewMessage = (message) => {
-    socket.volatile.emit('newMessage', message, (responce) => {
-      if (responce.status !== 'ok') {
+    socket.volatile.emit('newMessage', message, (response) => {
+      if (response.status !== 'ok') {
         throw new Error('Network ERROR: can\'t send the message');
       }
     });
@@ -31,9 +30,9 @@ const buildApi = (socket) => {
     store.dispatch(addMessage(message));
   });
 
-  const addNewChannel = (channel) => {
+  const addNewChannel = (channel, callback) => {
     socket.volatile.emit('newChannel', channel, ({ data, status }) => {
-      store.dispatch(setActiveChannel(data.id));
+      callback(data.id);
       if (status !== 'ok') {
         throw new Error('Network ERROR: can\'t create the channel');
       }
@@ -45,8 +44,8 @@ const buildApi = (socket) => {
   });
 
   const deleteChannel = (channel) => {
-    socket.volatile.emit('removeChannel', channel, (responce) => {
-      if (responce.status !== 'ok') {
+    socket.volatile.emit('removeChannel', channel, (response) => {
+      if (response.status !== 'ok') {
         throw new Error('Network ERROR: can\'t remove the channel');
       }
     });
@@ -57,8 +56,8 @@ const buildApi = (socket) => {
   });
 
   const renameChannelName = (data) => {
-    socket.volatile.emit('renameChannel', data, (responce) => {
-      if (responce.status !== 'ok') {
+    socket.volatile.emit('renameChannel', data, (response) => {
+      if (response.status !== 'ok') {
         throw new Error('Network ERROR: can\'t remove the channel');
       }
     });
@@ -89,9 +88,8 @@ const runApp = async () => {
       debug: false,
     });
 
-  const { REACT_APP_ROLLBAR_ACCES_TOKEN } = process.env;
   const rollbarConfig = {
-    accessToken: REACT_APP_ROLLBAR_ACCES_TOKEN,
+    accessToken: process.env.REACT_APP_ROLLBAR_ACCES_TOKEN,
     captureUncaught: true,
     captureUnhandledRejections: true,
     payload: {
