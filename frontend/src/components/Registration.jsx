@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { toast } from 'react-toastify';
 import { Form, Button } from 'react-bootstrap';
+import { useRollbar } from '@rollbar/react';
 
 import { useAuth } from '../hooks/index.jsx';
 import routes from '../routes.js';
@@ -16,6 +17,7 @@ const Registration = () => {
   const [registrationFailed, setRegistrationFailed] = useState(false);
   const [authExists, setAuthExists] = useState(false);
   const navigate = useNavigate();
+  const rollbar = useRollbar();
   const inputRef = useRef();
   useEffect(() => {
     inputRef.current.select();
@@ -56,6 +58,7 @@ const Registration = () => {
         logIn(data);
         navigate(routes.rootPagePath());
       } catch (err) {
+        rollbar.error(err);
         if (err.response.status === 409) {
           setAuthExists(true);
           setRegistrationFailed(true);

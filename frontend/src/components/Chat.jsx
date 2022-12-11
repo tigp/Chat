@@ -4,6 +4,7 @@ import { useDispatch, batch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { useRollbar } from '@rollbar/react';
 
 import Channels from './channels/Channels.jsx';
 import Messages from './messages/Messages.jsx';
@@ -18,6 +19,7 @@ const Chat = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const rollbar = useRollbar();
 
   useEffect(() => {
     const getData = async () => {
@@ -29,10 +31,13 @@ const Chat = () => {
         });
       } catch (err) {
         console.log(err);
+        rollbar.error(err);
+        if (!err.isAxiosError) {
+          toast.error(t('toast.unknownError'));
+        }
+
         if (err.response.status === 401) { // 401 Unauthorized
           navigate(routes.loginPagePath());
-        } else if (!err.isAxiosError) {
-          toast.error(t('toast.unknownError'));
         } else {
           toast.warn(`${t('toast.errorLoadingData')}`);
         }

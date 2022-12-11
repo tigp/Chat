@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import { toast } from 'react-toastify';
 import { Form, Button } from 'react-bootstrap';
+import { useRollbar } from '@rollbar/react';
 
 import { useAuth } from '../hooks/index.jsx';
 import routes from '../routes.js';
@@ -17,6 +18,7 @@ const Login = () => {
   const inputRef = useRef();
   const navigate = useNavigate();
   const location = useLocation();
+  const rollbar = useRollbar();
   useEffect(() => {
     inputRef.current.focus();
   }, []);
@@ -40,6 +42,7 @@ const Login = () => {
       } catch (err) {
         setAuthFailed(true);
         console.log(err);
+        rollbar.error(err);
         if (err.isAxiosError || err.response.status === 401) {
           inputRef.current.select();
           return;
