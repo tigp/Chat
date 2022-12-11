@@ -74,6 +74,7 @@ export default {
       deleteNotification: 'Канал удалён',
       errorLoadingData: 'Ошибка при загрузке данных',
       errorSendingMessage: 'Ошибка при отправке сообщения',
+      unknownError: 'Неизвестная ошибка',
     },
   },
 };

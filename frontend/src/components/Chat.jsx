@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, batch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 
 import Channels from './channels/Channels.jsx';
 import Messages from './messages/Messages.jsx';
@@ -16,6 +17,7 @@ const Chat = () => {
   const { getAuthHeader, logOut } = useAuth();
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getData = async () => {
@@ -26,8 +28,14 @@ const Chat = () => {
           dispatch(setMessages(data));
         });
       } catch (err) {
-        toast.warn(`${t('toast.errorLoadingData')}`);
-        logOut();
+        console.log(err);
+        if (err.response.status === 401) { // 401 Unauthorized
+          navigate(routes.loginPagePath());
+        } else if (!err.isAxiosError) {
+          toast.error(t('toast.unknownError'));
+        } else {
+          toast.warn(`${t('toast.errorLoadingData')}`);
+        }
       }
     };
 

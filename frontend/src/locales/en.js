@@ -72,6 +72,7 @@ export default {
       deleteNotification: 'Channel deleted',
       errorLoadingData: 'Error loading data',
       errorSendingMessage: "Can't send the message",
+      unknownError: 'Unknown error',
     },
   },
 };
