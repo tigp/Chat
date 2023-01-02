@@ -1,12 +1,13 @@
 # React SPA. Simplified analog of the Slack. The user has the ability to log in or sign up a new account, create or delete a channel.
 
-### Hexlet tests and linter status:
+### Linter status:
 [![Actions Status](https://github.com/tigp/frontend-project-12/workflows/hexlet-check/badge.svg)](https://github.com/tigp/frontend-project-12/actions)
 
 ### To install and use it you will need Node.js
 ```console
+fork repository
 clone this repository
-cd frontend-project-12
+cd Chat
 make install
 make start
 ```
